@@ -30,8 +30,6 @@ public class AuthService {
     public void loginUser(String login, String password)
     {
         User user = userService.getUserByLogin(login);
-        String password1 = user.getPassword();
-        String password2 = encoder.encode(password);
         if(user == null || !encoder.matches(password, user.getPassword()))
         {
             // тут нужно ругаться что пользователя нет с таким логином и паролем
