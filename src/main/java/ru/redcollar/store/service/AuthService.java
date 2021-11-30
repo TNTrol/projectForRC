@@ -2,6 +2,7 @@ package ru.redcollar.store.service;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ public class AuthService {
 
     private final RoleService roleService;
     private final UserService userService;
+    private final PasswordEncoder encoder;
 
     public void registerUser(String login, String password, String name)
     {
@@ -19,7 +21,7 @@ public class AuthService {
             User user = new User();
             user.setLogin(login);
             user.setName(name);
-            user.setPassword(password);
+            user.setPassword(encoder.encode(password));
             user.setRoles(roleService.getDefaultRoles());
             userService.saveUser(user);
         }
@@ -28,7 +30,9 @@ public class AuthService {
     public void loginUser(String login, String password)
     {
         User user = userService.getUserByLogin(login);
-        if(user == null || !user.getPassword().equals(password))
+        String password1 = user.getPassword();
+        String password2 = encoder.encode(password);
+        if(user == null || !encoder.matches(password, user.getPassword()))
         {
             // тут нужно ругаться что пользователя нет с таким логином и паролем
         }
