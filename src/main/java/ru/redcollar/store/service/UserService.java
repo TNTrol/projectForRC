@@ -29,8 +29,18 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
+    public boolean existUserByLogin(String login)
+    {
+        return userRepository.existsByLogin(login);
+    }
+
     public void deleteUser(User user)
     {
         userRepository.delete(user);
+    }
+
+    public boolean existUserByLoginAndPassword() // нужен данный метод вообще???
+    {
+        return false;
     }
 }

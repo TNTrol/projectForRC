@@ -14,26 +14,24 @@ public class AuthService {
     @Autowired
     private UserService userService;
 
-    public void registerUser(String login, String password, String name) throws UserExistsException
+    public void registerUser(String login, String password, String name)
     {
-        if(userService.getUserByLogin(login) != null)
-        {
-            throw new UserExistsException("User exists with login = " + login);
+        if(!userService.existUserByLogin(login)) {
+            User user = new User();
+            user.setLogin(login);
+            user.setName(name);
+            user.setPassword(password);
+            user.setRoles(roleService.getDefaultRoles());
+            userService.saveUser(user);
         }
-        User user = new User();
-        user.setLogin(login);
-        user.setName(name);
-        user.setPassword(password);
-        user.setRoles(roleService.getDefaultRoles());
-        userService.saveUser(user);
     }
 
-    public void loginUser(String login, String password) throws BadLoginException
+    public void loginUser(String login, String password)
     {
         User user = userService.getUserByLogin(login);
         if(user == null || !user.getPassword().equals(password))
         {
-            throw new BadLoginException("Incorrect username or password");
+            // тут нужно ругаться что пользователя нет с таким логином и паролем
         }
     }
 }
