@@ -1,12 +1,13 @@
 package ru.redcollar.store.service;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
 
     private final RoleService roleService;

@@ -1,6 +1,7 @@
 package ru.redcollar.store.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import ru.redcollar.store.exceptions.UserExistsException;
 import ru.redcollar.store.service.AuthService;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
