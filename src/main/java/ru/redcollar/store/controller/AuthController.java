@@ -4,25 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.redcollar.store.domain.model.AuthUser;
+import ru.redcollar.store.domain.model.RegistrationUser;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 import ru.redcollar.store.service.AuthService;
 
-@RestController
+@Controller
 public class AuthController {
 
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/registration")
-    public ResponseEntity registration(@RequestBody String login, @RequestBody String password, @RequestBody String name)
+    @PostMapping("/registration")
+    public ResponseEntity registration(@RequestBody RegistrationUser user)
     {
         try {
-            authService.registerUser(login, password, name);
+            authService.registerUser(user.getLogin(), user.getPassword(), user.getName());
             return ResponseEntity.ok(HttpStatus.OK);
         }
         catch (UserExistsException e)
@@ -32,15 +31,15 @@ public class AuthController {
     }
 
     @GetMapping("/authentication")
-    public ResponseEntity authentication(@RequestBody String login, @RequestBody String password)
+    public ResponseEntity authentication(@RequestBody AuthUser user)
     {
         try {
-            authService.loginUser(login, password);
+            authService.loginUser(user.getLogin(), user.getPassword());
             return ResponseEntity.ok(HttpStatus.OK);
         }
         catch (BadLoginException e)
         {
-            return ResponseEntity.ok(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.notFound().build();
         }
     }
 }

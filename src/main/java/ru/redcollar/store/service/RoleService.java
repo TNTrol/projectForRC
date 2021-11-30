@@ -2,7 +2,7 @@ package ru.redcollar.store.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.Role;
+import ru.redcollar.store.domain.entity.Role;
 import ru.redcollar.store.repository.RoleRepository;
 
 import java.util.Arrays;

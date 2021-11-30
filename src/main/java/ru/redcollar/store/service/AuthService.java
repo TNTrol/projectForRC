@@ -1,7 +1,7 @@
 package ru.redcollar.store.service;
 
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.User;
+import ru.redcollar.store.domain.entity.User;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package ru.redcollar.store.repository;
 
-import ru.redcollar.store.domain.Role;
+import ru.redcollar.store.domain.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

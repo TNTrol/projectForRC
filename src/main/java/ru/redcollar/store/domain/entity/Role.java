@@ -1,4 +1,4 @@
-package ru.redcollar.store.domain;
+package ru.redcollar.store.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
