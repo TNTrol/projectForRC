@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.redcollar.store.exceptions.BadLoginException;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class AuthService {
         User user = userService.getUserByLogin(login);
         if(user == null || !encoder.matches(password, user.getPassword()))
         {
-            // тут нужно ругаться что пользователя нет с таким логином и паролем
+            throw new BadLoginException("incorrect login or password");
         }
     }
 }

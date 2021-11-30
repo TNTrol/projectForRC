@@ -13,7 +13,7 @@ import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 import ru.redcollar.store.service.AuthService;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AuthController {
 

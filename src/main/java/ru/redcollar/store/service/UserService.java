@@ -40,8 +40,4 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public boolean existUserByLoginAndPassword() // нужен данный метод вообще???
-    {
-        return false;
-    }
 }
