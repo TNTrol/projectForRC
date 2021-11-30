@@ -1,5 +1,6 @@
 package ru.redcollar.store.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,10 @@ import ru.redcollar.store.repository.UserRepository;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
+    private final UserRepository userRepository;
 
     public void saveUser(User user)
     {

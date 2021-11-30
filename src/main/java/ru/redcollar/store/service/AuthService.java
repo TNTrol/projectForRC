@@ -1,18 +1,16 @@
 package ru.redcollar.store.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
-import ru.redcollar.store.exceptions.BadLoginException;
-import ru.redcollar.store.exceptions.UserExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
+@AllArgsConstructor
 public class AuthService {
 
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private UserService userService;
+    private final RoleService roleService;
+    private final UserService userService;
 
     public void registerUser(String login, String password, String name)
     {

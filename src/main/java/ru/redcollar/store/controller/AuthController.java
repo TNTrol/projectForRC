@@ -1,5 +1,6 @@
 package ru.redcollar.store.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,13 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.redcollar.store.domain.model.AuthUser;
 import ru.redcollar.store.domain.model.RegistrationUser;
+import ru.redcollar.store.exceptions.BadLoginException;
+import ru.redcollar.store.exceptions.UserExistsException;
 import ru.redcollar.store.service.AuthService;
 
 @Controller
+@AllArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/registration")
     public ResponseEntity<String> registration(@RequestBody RegistrationUser user)
