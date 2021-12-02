@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtConverter {
+
     @Value("${jwt.secret}")
     private String secret;
 
-    public AuthJwtUser parseJwt(String token)
-    {
+    public AuthJwtUser parseJwt(String token) {
         try {
             Claims body = Jwts.parser()
                     .setSigningKey(secret)
@@ -38,8 +38,7 @@ public class JwtConverter {
         }
     }
 
-    public String parseAuthJwtUser(AuthJwtUser user)
-    {
+    public String parseAuthJwtUser(AuthJwtUser user) {
         String jws = Jwts.builder()
                 .setSubject(user.getLogin())
                 .claim("id", user.getId())

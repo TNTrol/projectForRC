@@ -3,6 +3,8 @@ package ru.redcollar.store.service;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.component.JwtConverter;
@@ -27,8 +29,7 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final ModelMapper modelMapper;
 
-    public String registerUser(String login, String password, String name)
-    {
+    public String registerUser(String login, String password, String name) {
         if(!userService.existUserByLogin(login)) {
             User user = new User();
             user.setLogin(login);
@@ -42,20 +43,18 @@ public class AuthService {
         throw new UserExistsException("User " + login + " exist");
     }
 
-    public String loginUser(String login, String password)
-    {
+    public String loginUser(String login, String password) {
         User user = userService.getUserByLogin(login);
-        if(user == null || !encoder.matches(password, user.getPassword()))
-        {
+        if(user == null || !encoder.matches(password, user.getPassword())) {
             throw new BadLoginException("incorrect login or password");
         }
         AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
         return jwtConverter.parseAuthJwtUser(userDto);
     }
 
-    public AuthJwtUser getUser(String login)
-    {
-        User user = userService.getUserByLogin(login);
+    public AuthJwtUser getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getUserByLogin((String) authentication.getCredentials());
         AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
         return userDto;
     }

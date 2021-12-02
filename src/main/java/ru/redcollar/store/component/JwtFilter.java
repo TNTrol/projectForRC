@@ -25,8 +25,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtConverter jwtService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
-    {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("AUTH-TOKEN");
 
         if (token != null) {

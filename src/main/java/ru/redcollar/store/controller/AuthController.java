@@ -20,22 +20,19 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/registration")
-    public ResponseEntity<String> registration(@RequestBody RegistrationUser user)
-    {
+    public ResponseEntity<String> registration(@RequestBody RegistrationUser user) {
         String key =  authService.registerUser(user.getLogin(), user.getPassword(), user.getName());
-        return new ResponseEntity<>(key, HttpStatus.OK);
+        return ResponseEntity.ok(key);
     }
 
     @GetMapping("/authentication")
-    public ResponseEntity<String> authentication(@RequestBody AuthUser user)
-    {
+    public ResponseEntity<String> authentication(@RequestBody AuthUser user) {
         String key =  authService.loginUser(user.getLogin(), user.getPassword());
-        return new ResponseEntity<>(key, HttpStatus.OK);
+        return ResponseEntity.ok(key);
     }
 
-    @GetMapping("/showMe")
-    public AuthJwtUser showMe(Authentication authentication)
-    {
-        return authService.getUser((String) authentication.getCredentials());
+    @GetMapping("/show-me")
+    public AuthJwtUser showMe() {
+        return authService.getUser();
     }
 }

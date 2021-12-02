@@ -15,28 +15,23 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void saveUser(User user)
-    {
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 
-    public List<User> getAllUsers()
-    {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User getUserByLogin(String login)
-    {
+    public User getUserByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
-    public boolean existUserByLogin(String login)
-    {
+    public boolean existUserByLogin(String login){
         return userRepository.existsByLogin(login);
     }
 
-    public void deleteUser(User user)
-    {
+    public void deleteUser(User user){
         userRepository.delete(user);
     }
 

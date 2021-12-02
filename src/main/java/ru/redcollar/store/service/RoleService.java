@@ -16,13 +16,11 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public List<Role> getDefaultRoles()
-    {
+    public List<Role> getDefaultRoles() {
         return Arrays.asList(roleRepository.findByName("User"));
     }
 
-    public void saveRole(Role role)
-    {
+    public void saveRole(Role role) {
         roleRepository.save(role);
     }
 }
