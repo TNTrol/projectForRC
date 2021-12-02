@@ -2,6 +2,7 @@ package ru.redcollar.store.service;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.component.JwtConverter;
@@ -24,6 +25,7 @@ public class AuthService {
     private final UserService userService;
     private final JwtConverter jwtConverter;
     private final PasswordEncoder encoder;
+    private final ModelMapper modelMapper;
 
     public String registerUser(String login, String password, String name)
     {
@@ -34,12 +36,8 @@ public class AuthService {
             user.setPassword(encoder.encode(password));
             user.setRoles(roleService.getDefaultRoles());
             userService.saveUser(user);
-            List<RoleDto> roles = new ArrayList<>();
-            for (Role role: user.getRoles())
-            {
-                roles.add(new RoleDto(role.getName()));
-            }
-            return jwtConverter.parseAuthJwtUser(new AuthJwtUser(user.getId(), user.getLogin(), roles));
+            AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
+            return jwtConverter.parseAuthJwtUser(userDto);
         }
         throw new UserExistsException("User " + login + " exist");
     }
@@ -51,22 +49,14 @@ public class AuthService {
         {
             throw new BadLoginException("incorrect login or password");
         }
-        List<RoleDto> roles = new ArrayList<>();
-        for (Role role: user.getRoles())
-        {
-            roles.add(new RoleDto(role.getName()));
-        }
-        return jwtConverter.parseAuthJwtUser(new AuthJwtUser(user.getId(), user.getLogin(), roles));
+        AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
+        return jwtConverter.parseAuthJwtUser(userDto);
     }
 
     public AuthJwtUser getUser(String login)
     {
         User user = userService.getUserByLogin(login);
-        List<RoleDto> roles = new ArrayList<>();
-        for (Role role: user.getRoles())
-        {
-            roles.add(new RoleDto(role.getName()));
-        }
-        return new AuthJwtUser(user.getId(), user.getLogin(), roles);
+        AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
+        return userDto;
     }
 }
