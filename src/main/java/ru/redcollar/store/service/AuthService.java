@@ -1,6 +1,5 @@
 package ru.redcollar.store.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -8,16 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.component.JwtConverter;
-import ru.redcollar.store.domain.entity.Role;
 import ru.redcollar.store.domain.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import ru.redcollar.store.domain.model.AuthJwtUser;
-import ru.redcollar.store.domain.model.RoleDto;
+import ru.redcollar.store.domain.model.JwtTokenUser;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +30,7 @@ public class AuthService {
             user.setPassword(encoder.encode(password));
             user.setRoles(roleService.getDefaultRoles());
             userService.saveUser(user);
-            AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
+            JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
             return jwtConverter.parseAuthJwtUser(userDto);
         }
         throw new UserExistsException("User " + login + " exist");
@@ -48,14 +41,14 @@ public class AuthService {
         if(user == null || !encoder.matches(password, user.getPassword())) {
             throw new BadLoginException("incorrect login or password");
         }
-        AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
+        JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
         return jwtConverter.parseAuthJwtUser(userDto);
     }
 
-    public AuthJwtUser getUser() {
+    public JwtTokenUser getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
-        AuthJwtUser userDto = modelMapper.map(user, AuthJwtUser.class);
+        JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
         return userDto;
     }
 }

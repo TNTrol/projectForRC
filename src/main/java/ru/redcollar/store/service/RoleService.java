@@ -9,6 +9,7 @@ import ru.redcollar.store.repository.RoleRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +18,16 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     public List<Role> getDefaultRoles() {
-        return Arrays.asList(roleRepository.findByName("User"));
+        return List.of(roleRepository.findByName("User"));
     }
 
     public void saveRole(Role role) {
         roleRepository.save(role);
+    }
+
+    public List<Role> getRolesByIds(List<Long> ids){
+        return ids.stream()
+                .map(id -> roleRepository.findById(id).get())
+                .collect(Collectors.toList());
     }
 }
