@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthJwtUser {
-    private Long id;
+public class UserUpdateDto {
     private String login;
+    private String name;
     private List<RoleDto> roles;
 }
