@@ -41,8 +41,8 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/list/{number}/{size}")
-    public List<UserDto> getAllUsers(@PathVariable int number,@PathVariable int size){
-        return userService.getAllUsersDto(number, size);
+    @GetMapping("/list/{page}/{size}")
+    public List<UserDto> getAllUsers(@PathVariable int page,@PathVariable int size){
+        return userService.getAllUsersDto(page, size);
     }
 }

@@ -87,13 +87,13 @@ public class UserService {
         return modelMapper.map(userRepository.getById(id), UserDto.class);
     }
 
-    public List<UserDto> getAllUsersDto(int number, int size) {
-        int indexFrom = number * size;
+    public List<UserDto> getAllUsersDto(int page, int size) {
+        int indexFrom = page * size;
         List<User> users = getAllUsers();
         if(users.size() <= indexFrom){
             return Collections.emptyList();
         }
-        int indexTo = indexFrom + size >= users.size() ? users.size() - 1 : indexFrom + size;
+        int indexTo = Math.min(indexFrom + size, users.size());
         return users.subList(indexFrom, indexTo)
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))

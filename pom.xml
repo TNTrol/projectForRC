@@ -22,7 +22,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <!--это ЗЛО!!! не включать!!! ломает вебконтроллер!!!-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
