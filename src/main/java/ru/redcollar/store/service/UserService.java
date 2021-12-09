@@ -1,19 +1,29 @@
 package ru.redcollar.store.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import ru.redcollar.store.domain.model.RoleDto;
+import ru.redcollar.store.domain.model.UserDto;
+import ru.redcollar.store.domain.model.UserUpdateDto;
+import ru.redcollar.store.exceptions.UserDontExistException;
+import ru.redcollar.store.exceptions.UserExistsException;
 import ru.redcollar.store.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final ModelMapper modelMapper;
+    private final PasswordEncoder encoder;
 
     public void saveUser(User user) {
         userRepository.save(user);
@@ -35,4 +45,58 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public void deleteUser(Long id){
+        userRepository.deleteById(id);
+    }
+
+    public void updateUser(UserUpdateDto userUpdate) {
+        User user = userRepository.findByLogin(userUpdate.getLogin());
+        if(user == null){
+            throw new UserDontExistException(userUpdate.getLogin());
+        }
+        User resUser = modelMapper.map(userUpdate, User.class);
+        List<Long> roleIds = userUpdate.getRoles().stream()
+                .map(RoleDto::getId)
+                .collect(Collectors.toList());
+        user.setRoles(roleService.getRolesByIds(roleIds));
+        resUser.setId(user.getId());
+        resUser.setPassword(user.getPassword());
+        userRepository.save(resUser);
+    }
+
+    public void saveUser(UserDto userDto) {
+        if(userRepository.existsByLogin(userDto.getLogin())){
+            throw new UserExistsException(userDto.getLogin() + " exist!");
+        }
+        User user = modelMapper.map(userDto, User.class);
+        List<Long> roleIds = userDto.getRoles().stream()
+                .map(RoleDto::getId)
+                .collect(Collectors.toList());
+        user.setRoles(roleService.getRolesByIds(roleIds));
+        user.setPassword(encoder.encode(userDto.getPassword()));
+        user.setId(null);
+        userRepository.save(user);
+    }
+
+    public UserDto getUserDtoByLogin(String login) {
+        User user = getUserByLogin(login);
+        return modelMapper.map(user, UserDto.class);
+    }
+
+    public UserDto getUserById(Long id) {
+        return modelMapper.map(userRepository.getById(id), UserDto.class);
+    }
+
+    public List<UserDto> getAllUsersDto(int page, int size) {
+        int indexFrom = page * size;
+        List<User> users = getAllUsers();
+        if(users.size() <= indexFrom){
+            return Collections.emptyList();
+        }
+        int indexTo = Math.min(indexFrom + size, users.size());
+        return users.subList(indexFrom, indexTo)
+                .stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
 }

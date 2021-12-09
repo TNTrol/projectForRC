@@ -1,15 +1,16 @@
 package ru.redcollar.store.domain.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationUser {
+@NoArgsConstructor
+public class UserUpdateDto {
     private String login;
-    private String password;
     private String name;
+    private List<RoleDto> roles;
 }

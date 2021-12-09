@@ -1,16 +1,11 @@
 package ru.redcollar.store.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.redcollar.store.component.JwtConverter;
-import ru.redcollar.store.domain.model.AuthJwtUser;
+import ru.redcollar.store.domain.model.JwtTokenUser;
 import ru.redcollar.store.domain.model.AuthUser;
-import ru.redcollar.store.domain.model.RegistrationUser;
+import ru.redcollar.store.domain.model.NewUser;
 import ru.redcollar.store.service.AuthService;
 
 @RestController
@@ -20,7 +15,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/registration")
-    public ResponseEntity<String> registration(@RequestBody RegistrationUser user) {
+    public ResponseEntity<String> registration(@RequestBody NewUser user) {
         String key =  authService.registerUser(user.getLogin(), user.getPassword(), user.getName());
         return ResponseEntity.ok(key);
     }
@@ -32,7 +27,7 @@ public class AuthController {
     }
 
     @GetMapping("/show-me")
-    public AuthJwtUser showMe() {
+    public JwtTokenUser showMe() {
         return authService.getUser();
     }
 }
