@@ -1,6 +1,8 @@
 package ru.redcollar.store.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.redcollar.store.domain.model.UserDto;
@@ -17,32 +19,35 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public void createUser(@RequestBody UserDto user) {
+    public ResponseEntity<Void> createUser(@RequestBody UserDto user) {
         userService.saveUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping
-    public void updateUser(@RequestBody UserUpdateDto user) {
+    public ResponseEntity<Void> updateUser(@RequestBody UserUpdateDto user) {
         userService.updateUser(user);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/by-login/{login}")
-    public UserDto getUser(@PathVariable String login) {
-        return userService.getUserDtoByLogin(login);
+    public ResponseEntity<UserDto> getUser(@PathVariable String login) {
+        return ResponseEntity.ok(userService.getUserDtoByLogin(login));
     }
 
     @GetMapping("/by-id/{id}")
-    public UserDto getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<UserDto>  getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/list/{page}/{size}")
-    public List<UserDto> getAllUsers(@PathVariable int page,@PathVariable int size){
-        return userService.getAllUsersDto(page, size);
+    public ResponseEntity<List<UserDto>> getAllUsers(@PathVariable int page,@PathVariable int size){
+        return ResponseEntity.ok(userService.getAllUsersDto(page, size));
     }
 }

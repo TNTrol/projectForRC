@@ -2,16 +2,18 @@ package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.Product;
-import ru.redcollar.store.domain.model.NewProduct;
 import ru.redcollar.store.domain.model.ProductDto;
-import ru.redcollar.store.domain.model.UserDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.exceptions.ProductExistException;
 import ru.redcollar.store.repository.ProductRepository;
 
-import java.lang.reflect.Type;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,13 +25,13 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
 
-    public void saveProduct(NewProduct newProduct) {
-        if(productRepository.existsByName(newProduct.getName()))
-        {
-            throw new ProductExistException(newProduct.getName(), newProduct.getType().toString());
+    public void saveProduct(ProductDto product) {
+        if (productRepository.existsByName(product.getName())) {
+            throw new ProductExistException(product.getName(), product.getType().toString());
         }
-        Product product = modelMapper.map(newProduct, Product.class);
-        productRepository.save(product);
+        product.setId(null);
+        Product product1 = modelMapper.map(product, Product.class);
+        productRepository.save(product1);
     }
 
     public void updateProduct(ProductDto productDto) {
@@ -45,17 +47,15 @@ public class ProductService {
     }
 
     public List<ProductDto> getAll(int page, int size) {
-        int start = page * size;
-        List<Product> products = productRepository.findAll();
-        if (products.size() <= start) {
+        if (page < 0 || size < 0) {
             return Collections.emptyList();
         }
-        int end = Math.min(start + size, products.size());
-        return products.subList(start, end)
+        int start = page * size;
+        Pageable pageable = PageRequest.of(start, start + size);
+        return productRepository.findAll(pageable)
                 .stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
-
     }
 
     public ProductDto getUser(Long id) {
