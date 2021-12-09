@@ -29,7 +29,6 @@ public class ProductService {
         if (productRepository.existsByName(product.getName())) {
             throw new ProductExistException(product.getName(), product.getType().toString());
         }
-        product.setId(null);
         Product product1 = modelMapper.map(product, Product.class);
         productRepository.save(product1);
     }
@@ -50,8 +49,7 @@ public class ProductService {
         if (page < 0 || size < 0) {
             return Collections.emptyList();
         }
-        int start = page * size;
-        Pageable pageable = PageRequest.of(start, start + size);
+        Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable)
                 .stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))

@@ -93,8 +93,7 @@ public class UserService {
         if (page < 0 || size < 0) {
             return Collections.emptyList();
         }
-        int start = page * size;
-        Pageable pageable = PageRequest.of(start, start + size);
+        Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable)
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))

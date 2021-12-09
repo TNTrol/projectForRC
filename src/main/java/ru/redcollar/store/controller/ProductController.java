@@ -17,8 +17,8 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/list/{page}/{size}")
-    public ResponseEntity<List> getAllProduct(@PathVariable int page, @PathVariable int size) {
+    @GetMapping("/list")
+    public ResponseEntity<List> getAllProduct(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAll(page, size));
     }
 

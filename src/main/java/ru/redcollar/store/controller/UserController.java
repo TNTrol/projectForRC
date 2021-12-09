@@ -46,8 +46,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @GetMapping("/list/{page}/{size}")
-    public ResponseEntity<List<UserDto>> getAllUsers(@PathVariable int page,@PathVariable int size){
+    @GetMapping("/list")
+    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size){
         return ResponseEntity.ok(userService.getAllUsersDto(page, size));
     }
 }
