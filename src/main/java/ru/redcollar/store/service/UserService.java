@@ -2,6 +2,8 @@ package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.User;
@@ -87,14 +89,12 @@ public class UserService {
         return modelMapper.map(userRepository.getById(id), UserDto.class);
     }
 
-    public List<UserDto> getAllUsersDto(int number, int size) {
-        int indexFrom = number * size;
-        List<User> users = getAllUsers();
-        if(users.size() <= indexFrom){
+    public List<UserDto> getAllUsersDto(int page, int size) {
+        if (page < 0 || size < 0) {
             return Collections.emptyList();
         }
-        int indexTo = indexFrom + size >= users.size() ? users.size() - 1 : indexFrom + size;
-        return users.subList(indexFrom, indexTo)
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable)
                 .stream()
                 .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
