@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.redcollar.store.domain.entity.TypeProduct;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,5 +15,5 @@ public class ProductDto {
     private String description;
     private String name;
     private TypeProduct type;
-    private Double cost;
+    private BigDecimal cost;
 }
