@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.service.ProductService;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/list")
-    public ResponseEntity<List> getAllProduct(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
+    public ResponseEntity<List> getAllProduct(@RequestParam(name = "page") @Min(0) int page, @RequestParam(name = "size") @Min(1) int size) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAll(page, size));
     }
 
