@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 
-    List<Offer> findByUser(User user, Pageable pageable);
+    List<Offer> findByUserId(Long user_id, Pageable pageable);
 }

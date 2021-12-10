@@ -24,7 +24,7 @@ CREATE TABLE offer (
     user_id INTEGER NOT NULL,
     cost DECIMAL NOT NULL,
     status VARCHAR(30) NOT NULL,
-    date DATE NOT NULL;
+    date TIMESTAMP NOT NULL;
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 

@@ -5,18 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name="offer")
+@Table(name = "offer")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Offer {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -24,10 +25,10 @@ public class Offer {
     private User user;
 
     @Column(name = "cost")
-    private Double cost;
+    private BigDecimal cost;
 
     @Column(name = "date")
-    private Date date;
+    private Instant date;
 
     @Column(name = "status")
     private StatusOffer status;
