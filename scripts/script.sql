@@ -23,6 +23,8 @@ CREATE TABLE offer (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     cost DECIMAL NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    date DATE NOT NULL;
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 

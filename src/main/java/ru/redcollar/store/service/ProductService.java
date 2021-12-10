@@ -59,4 +59,10 @@ public class ProductService {
     public ProductDto getUser(Long id) {
         return modelMapper.map(productRepository.getById(id), ProductDto.class);
     }
+
+    public List<Product> getProductsByIds(List<Long> ids){
+        return ids.stream()
+                .map(id -> productRepository.findById(id).get())
+                .collect(Collectors.toList());
+    }
 }
