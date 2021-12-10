@@ -64,8 +64,8 @@ public class OfferService {
                 .collect(Collectors.toList());
     }
 
-    public void sendOffer(Long offer_id) {
-        Offer offer = offerRepository.findById(offer_id).get();
+    public void sendOffer(Long offerId) {
+        Offer offer = offerRepository.findById(offerId).get();
         offer.setStatus(StatusOffer.SENT);
         offerRepository.save(offer);
     }

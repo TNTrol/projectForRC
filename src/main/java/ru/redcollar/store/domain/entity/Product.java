@@ -25,6 +25,7 @@ public class Product {
     private String name;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private TypeProduct type;
 
     @Column(name = "cost")

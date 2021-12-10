@@ -29,9 +29,9 @@ public class OfferController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/{offer_id}")
-    public ResponseEntity<Void> send(@PathVariable Long offer_id) {
-        offerService.sendOffer(offer_id);
+    @PutMapping("/{offerId}")
+    public ResponseEntity<Void> send(@PathVariable Long offerId) {
+        offerService.sendOffer(offerId);
         return ResponseEntity.ok().build();
     }
 

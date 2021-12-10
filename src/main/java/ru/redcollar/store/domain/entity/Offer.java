@@ -31,6 +31,7 @@ public class Offer {
     private Instant date;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private StatusOffer status;
 
     @ManyToMany
