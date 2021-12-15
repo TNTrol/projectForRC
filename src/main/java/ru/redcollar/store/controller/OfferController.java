@@ -8,6 +8,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.service.OfferService;
+import ru.redcollar.store.validator.OnCreateOffer;
+import ru.redcollar.store.validator.OnCreateProduct;
+import ru.redcollar.store.validator.OnUpdateProduct;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -16,6 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/offer")
+@Validated
 public class OfferController {
 
     private final OfferService offerService;
@@ -26,6 +30,7 @@ public class OfferController {
     }
 
     @PostMapping
+    @Validated(OnCreateOffer.class)
     public ResponseEntity<Void> createOffer(@Valid @RequestBody OfferDto offer) {
         offerService.saveOffer(offer);
         return ResponseEntity.ok().build();
