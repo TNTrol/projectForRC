@@ -13,11 +13,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class AuthUser {
     @NotNull
-    @Min(6)
-    @Max(29)
     private String login;
     @NotNull
-    @Min(8)
-    @Max(29)
     private String password;
 }

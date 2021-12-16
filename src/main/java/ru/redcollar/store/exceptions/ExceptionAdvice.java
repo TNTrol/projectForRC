@@ -10,32 +10,27 @@ import ru.redcollar.store.domain.entity.Product;
 public class ExceptionAdvice {
 
     @ExceptionHandler(value = UserDontExistException.class)
-    public ResponseEntity<String> handleUserDontExists(UserDontExistException ex)
-    {
+    public ResponseEntity<String> handleUserDontExists(UserDontExistException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = UserExistsException.class)
-    public ResponseEntity<String> handleUserExists(UserExistsException ex)
-    {
+    public ResponseEntity<String> handleUserExists(UserExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = ProductExistException.class)
-    public ResponseEntity<String> handleProductExists(ProductExistException ex)
-    {
+    public ResponseEntity<String> handleProductExists(ProductExistException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = ProductDontExistException.class)
-    public ResponseEntity<String> handleProductDontExists(ProductDontExistException ex)
-    {
+    public ResponseEntity<String> handleProductDontExists(ProductDontExistException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(value = BadLoginException.class)
-    public ResponseEntity<String> handleProductExists(BadLoginException ex)
-    {
+    public ResponseEntity<String> handleProductExists(BadLoginException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
