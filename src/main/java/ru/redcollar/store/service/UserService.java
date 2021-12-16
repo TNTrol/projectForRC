@@ -45,6 +45,14 @@ public class UserService {
         return userRepository.existsByLogin(login);
     }
 
+    public boolean existUserByLoginOrEmail(String login, String email) {
+        return userRepository.existsByLoginOrEmail(login, email);
+    }
+
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     public void deleteUser(User user) {
         userRepository.delete(user);
     }

@@ -18,7 +18,7 @@ public class AuthController {
 
     @PostMapping("/registration")
     public ResponseEntity<String> registration(@Valid @RequestBody NewUser user) {
-        String key =  authService.registerUser(user.getLogin(), user.getPassword(), user.getName());
+        String key =  authService.registerUser(user);
         return ResponseEntity.ok(key);
     }
 

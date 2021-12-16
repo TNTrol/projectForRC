@@ -13,15 +13,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class NewUser {
     @NotNull
-    @Min(6)
-    @Max(29)
     private String login;
     @NotNull
-    @Min(8)
-    @Max(10)
     private String password;
     @NotNull
-    @Min(2)
-    @Max(29)
     private String name;
+    @NotNull
+    private String email;
 }
