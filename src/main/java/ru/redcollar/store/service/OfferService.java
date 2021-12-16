@@ -15,6 +15,7 @@ import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.repository.OfferRepository;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -53,9 +54,6 @@ public class OfferService {
     }
 
     public List<OfferDto> getAllOffer(int page, int size) {
-        if (page < 0 || size < 0) {
-            return Collections.emptyList();
-        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
         Pageable pageable = PageRequest.of(page, size);

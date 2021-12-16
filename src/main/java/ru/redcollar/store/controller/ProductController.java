@@ -4,34 +4,42 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.service.ProductService;
+import ru.redcollar.store.validator.OnCreateProduct;
+import ru.redcollar.store.validator.OnUpdateProduct;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
     private final ProductService productService;
 
     @GetMapping("/list")
-    public ResponseEntity<List> getAllProduct(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
+    public ResponseEntity<List> getAllProduct(@RequestParam(name = "page") @Min(0) int page, @RequestParam(name = "size") @Min(1) int size) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAll(page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> createProduct(@RequestBody ProductDto product) {
+    @Validated(OnCreateProduct.class)
+    public ResponseEntity<Void> createProduct(@Valid @RequestBody ProductDto product) {
         productService.saveProduct(product);
         return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping
-    public ResponseEntity<Void> updateProduct(@RequestBody ProductDto product) {
+    @Validated(OnUpdateProduct.class)
+    public ResponseEntity<Void> updateProduct(@Validated @RequestBody ProductDto product) {
         productService.updateProduct(product);
         return ResponseEntity.ok().build();
     }
