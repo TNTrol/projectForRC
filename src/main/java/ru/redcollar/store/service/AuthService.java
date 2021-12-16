@@ -1,6 +1,7 @@
 package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import ru.redcollar.store.exceptions.UserExistsException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthService {
 
     private final RoleService roleService;
@@ -33,12 +35,14 @@ public class AuthService {
             JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
             return jwtConverter.parseAuthJwtUser(userDto);
         }
+        log.error("User " + login + " exist");
         throw new UserExistsException("User " + login + " exist");
     }
 
     public String loginUser(String login, String password) {
         User user = userService.getUserByLogin(login);
         if(user == null || !encoder.matches(password, user.getPassword())) {
+            log.error("incorrect login or password");
             throw new BadLoginException("incorrect login or password");
         }
         JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);

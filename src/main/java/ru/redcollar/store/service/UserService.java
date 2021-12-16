@@ -1,6 +1,7 @@
 package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -54,6 +56,7 @@ public class UserService {
     public void updateUser(UserUpdateDto userUpdate) {
         User user = userRepository.findByLogin(userUpdate.getLogin());
         if(user == null){
+            log.error("User " + userUpdate.getLogin() + " don't exist!");
             throw new UserDontExistException(userUpdate.getLogin());
         }
         User resUser = modelMapper.map(userUpdate, User.class);
@@ -68,6 +71,7 @@ public class UserService {
 
     public void saveUser(UserDto userDto) {
         if(userRepository.existsByLogin(userDto.getLogin())){
+            log.error("User " + userDto.getLogin() + " exist!");
             throw new UserExistsException(userDto.getLogin() + " exist!");
         }
         User user = modelMapper.map(userDto, User.class);

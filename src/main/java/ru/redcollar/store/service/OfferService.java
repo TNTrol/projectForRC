@@ -38,12 +38,7 @@ public class OfferService {
         List<Long> ids = offerDto.getProducts().stream()
                 .map(ProductDto::getId)
                 .collect(Collectors.toList());
-        List<Product> products;
-        try {
-            products = productService.getProductsByIds(ids);
-        } catch (Exception e) {
-            throw new ProductDontExistException();
-        }
+        List<Product> products = productService.getProductsByIds(ids);
         BigDecimal cost = products.stream()
                 .map(Product::getCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
