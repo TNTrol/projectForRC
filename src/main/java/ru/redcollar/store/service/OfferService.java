@@ -13,6 +13,8 @@ import ru.redcollar.store.domain.entity.StatusOffer;
 import ru.redcollar.store.domain.entity.User;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.ProductDto;
+import ru.redcollar.store.exceptions.ProductDontExistException;
+import ru.redcollar.store.exceptions.ProductExistException;
 import ru.redcollar.store.repository.OfferRepository;
 
 import javax.validation.Valid;
@@ -36,7 +38,12 @@ public class OfferService {
         List<Long> ids = offerDto.getProducts().stream()
                 .map(ProductDto::getId)
                 .collect(Collectors.toList());
-        List<Product> products = productService.getProductsByIds(ids);
+        List<Product> products;
+        try {
+            products = productService.getProductsByIds(ids);
+        } catch (Exception e) {
+            throw new ProductDontExistException();
+        }
         BigDecimal cost = products.stream()
                 .map(Product::getCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
