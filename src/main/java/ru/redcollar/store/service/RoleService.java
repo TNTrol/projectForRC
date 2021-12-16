@@ -26,8 +26,6 @@ public class RoleService {
     }
 
     public List<Role> getRolesByIds(List<Long> ids){
-        return ids.stream()
-                .map(id -> roleRepository.findById(id).get())
-                .collect(Collectors.toList());
+        return roleRepository.findByIds(ids);
     }
 }

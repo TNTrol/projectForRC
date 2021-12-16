@@ -61,8 +61,6 @@ public class ProductService {
     }
 
     public List<Product> getProductsByIds(List<Long> ids){
-        return ids.stream()
-                .map(id -> productRepository.findById(id).get())
-                .collect(Collectors.toList());
+        return productRepository.findByIds(ids);
     }
 }
