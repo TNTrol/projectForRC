@@ -1,6 +1,7 @@
 package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -27,6 +29,7 @@ public class ProductService {
 
     public void saveProduct(ProductDto product) {
         if (productRepository.existsByName(product.getName())) {
+            log.error("Product {} exist!", product.getName());
             throw new ProductExistException(product.getName(), product.getType().toString());
         }
         Product product1 = modelMapper.map(product, Product.class);
@@ -35,6 +38,7 @@ public class ProductService {
 
     public void updateProduct(ProductDto productDto) {
         if (!productRepository.existsById(productDto.getId())) {
+            log.error("Product {} don't exist!", productDto.getName());
             throw new ProductDontExistException();
         }
         Product product = modelMapper.map(productDto, Product.class);
@@ -60,9 +64,7 @@ public class ProductService {
         return modelMapper.map(productRepository.getById(id), ProductDto.class);
     }
 
-    public List<Product> getProductsByIds(List<Long> ids){
-        return ids.stream()
-                .map(id -> productRepository.findById(id).get())
-                .collect(Collectors.toList());
+    public List<Product> getProductsByIds(List<Long> ids) {
+        return productRepository.findByIds(ids);
     }
 }

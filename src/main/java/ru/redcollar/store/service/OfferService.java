@@ -13,6 +13,8 @@ import ru.redcollar.store.domain.entity.StatusOffer;
 import ru.redcollar.store.domain.entity.User;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.ProductDto;
+import ru.redcollar.store.exceptions.ProductDontExistException;
+import ru.redcollar.store.exceptions.ProductExistException;
 import ru.redcollar.store.repository.OfferRepository;
 
 import javax.validation.Valid;
