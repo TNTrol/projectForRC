@@ -41,22 +41,22 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
-    public boolean existUserByLogin(String login){
+    public boolean existUserByLogin(String login) {
         return userRepository.existsByLogin(login);
     }
 
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         userRepository.delete(user);
     }
 
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     public void updateUser(UserUpdateDto userUpdate) {
         User user = userRepository.findByLogin(userUpdate.getLogin());
-        if(user == null){
-            log.error("User " + userUpdate.getLogin() + " don't exist!");
+        if (user == null) {
+            log.error("User {} don't exist! ", userUpdate.getLogin());
             throw new UserDontExistException(userUpdate.getLogin());
         }
         User resUser = modelMapper.map(userUpdate, User.class);
@@ -70,8 +70,8 @@ public class UserService {
     }
 
     public void saveUser(UserDto userDto) {
-        if(userRepository.existsByLogin(userDto.getLogin())){
-            log.error("User " + userDto.getLogin() + " exist!");
+        if (userRepository.existsByLogin(userDto.getLogin())) {
+            log.error("User {} exist!", userDto.getLogin());
             throw new UserExistsException(userDto.getLogin() + " exist!");
         }
         User user = modelMapper.map(userDto, User.class);

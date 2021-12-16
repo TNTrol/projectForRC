@@ -15,5 +15,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
     boolean existsByName(String name);
 
     @Query("SELECT p FROM Product p WHERE p.id IN (:ids)")
-    List<Product> findByIds(@Param("ids")List<Long> ids);
+    List<Product> findByIds(@Param("ids") List<Long> ids);
 }

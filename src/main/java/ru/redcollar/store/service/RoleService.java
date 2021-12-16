@@ -25,7 +25,7 @@ public class RoleService {
         roleRepository.save(role);
     }
 
-    public List<Role> getRolesByIds(List<Long> ids){
+    public List<Role> getRolesByIds(List<Long> ids) {
         return roleRepository.findByIds(ids);
     }
 }

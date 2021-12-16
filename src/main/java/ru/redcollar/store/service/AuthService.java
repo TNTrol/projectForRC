@@ -25,7 +25,7 @@ public class AuthService {
     private final ModelMapper modelMapper;
 
     public String registerUser(String login, String password, String name) {
-        if(!userService.existUserByLogin(login)) {
+        if (!userService.existUserByLogin(login)) {
             User user = new User();
             user.setLogin(login);
             user.setName(name);
@@ -35,15 +35,15 @@ public class AuthService {
             JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
             return jwtConverter.parseAuthJwtUser(userDto);
         }
-        log.error("User " + login + " exist");
+        log.error("User {} exist", login);
         throw new UserExistsException("User " + login + " exist");
     }
 
     public String loginUser(String login, String password) {
         User user = userService.getUserByLogin(login);
-        if(user == null || !encoder.matches(password, user.getPassword())) {
-            log.error("incorrect login or password");
-            throw new BadLoginException("incorrect login or password");
+        if (user == null || !encoder.matches(password, user.getPassword())) {
+            log.error("Incorrect login({}) or password", login);
+            throw new BadLoginException("Incorrect login or password");
         }
         JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
         return jwtConverter.parseAuthJwtUser(userDto);
