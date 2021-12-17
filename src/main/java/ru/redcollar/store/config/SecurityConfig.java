@@ -19,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.client.RestTemplate;
 import ru.redcollar.store.component.JwtFilter;;
 
 @Configuration
@@ -53,4 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
+    @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+
 }
