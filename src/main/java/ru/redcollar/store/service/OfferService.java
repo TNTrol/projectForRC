@@ -11,6 +11,7 @@ import ru.redcollar.store.domain.entity.Offer;
 import ru.redcollar.store.domain.entity.Product;
 import ru.redcollar.store.domain.entity.StatusOffer;
 import ru.redcollar.store.domain.entity.User;
+import ru.redcollar.store.domain.model.Mail;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
@@ -31,6 +32,7 @@ public class OfferService {
     private final UserService userService;
     private final ProductService productService;
     private final ModelMapper modelMapper;
+    private final SenderMailService mailService;
 
     public void saveOffer(OfferDto offerDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,6 +51,7 @@ public class OfferService {
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
         offerRepository.save(offer);
+        mailService.sendMail(new Mail(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
     }
 
     public OfferDto getOffer(long id) {
