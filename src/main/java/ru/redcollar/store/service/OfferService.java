@@ -22,6 +22,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +69,11 @@ public class OfferService {
     }
 
     public void sendOffer(Long offerId) {
-        Offer offer = offerRepository.findById(offerId).get();
+        Optional<Offer> offerOptional = offerRepository.findById(offerId);
+        if (offerOptional.isEmpty()) {
+            throw new ProductDontExistException();
+        }
+        Offer offer = offerOptional.get();
         offer.setStatus(StatusOffer.SENT);
         offerRepository.save(offer);
     }

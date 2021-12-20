@@ -11,6 +11,7 @@ import ru.redcollar.store.component.JwtConverter;
 import ru.redcollar.store.domain.entity.User;
 import ru.redcollar.store.domain.model.JwtTokenUser;
 import ru.redcollar.store.domain.model.NewUser;
+import ru.redcollar.store.domain.model.Token;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 
@@ -25,7 +26,7 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final ModelMapper modelMapper;
 
-    public String registerUser(NewUser newUser) {
+    public Token registerUser(NewUser newUser) {
         String temp = newUser.getLogin();
         if (!userService.existUserByLogin(newUser.getLogin())) {
             temp = newUser.getEmail();
@@ -38,21 +39,21 @@ public class AuthService {
                 user.setRoles(roleService.getDefaultRoles());
                 userService.saveUser(user);
                 JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
-                return jwtConverter.parseAuthJwtUser(userDto);
+                return new Token(jwtConverter.parseAuthJwtUser(userDto));
             }
         }
         log.error("User {} exist", temp);
         throw new UserExistsException("User " + temp + " exist");
     }
 
-    public String loginUser(String login, String password) {
+    public Token loginUser(String login, String password) {
         User user = userService.getUserByLogin(login);
         if (user == null || !encoder.matches(password, user.getPassword())) {
             log.error("Incorrect login({}) or password", login);
             throw new BadLoginException("Incorrect login or password");
         }
         JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
-        return jwtConverter.parseAuthJwtUser(userDto);
+        return new Token(jwtConverter.parseAuthJwtUser(userDto));
     }
 
     public JwtTokenUser getUser() {
