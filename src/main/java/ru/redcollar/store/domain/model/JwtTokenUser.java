@@ -12,5 +12,7 @@ import java.util.List;
 public class JwtTokenUser {
     private Long id;
     private String login;
+    private String name;
+    private String email;
     private List<RoleDto> roles;
 }

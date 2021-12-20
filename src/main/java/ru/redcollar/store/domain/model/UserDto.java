@@ -16,19 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDto {
     @NotNull
-    @Min(6)
-    @Max(29)
     private String login;
     @NotNull
-    @Min(2)
-    @Max(29)
     private String name;
     @NotNull
     @NotEmpty
     @Valid
     private List<RoleDto> roles;
     @NotNull
-    @Min(8)
-    @Max(10)
     private String password;
+    @NotNull
+    private String email;
 }

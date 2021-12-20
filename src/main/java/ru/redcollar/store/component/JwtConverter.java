@@ -30,6 +30,7 @@ public class JwtConverter {
 
             JwtTokenUser user = new JwtTokenUser();
             user.setLogin(body.getSubject());
+            user.setEmail((String) body.get("email"));
             Integer id = (Integer) body.get("id");
             var a  = (ArrayList<LinkedHashMap>) body.get("role");
             user.setId(id.longValue());
@@ -46,6 +47,7 @@ public class JwtConverter {
                 .setSubject(user.getLogin())
                 .claim("id", user.getId())
                 .claim("role", user.getRoles())
+                .claim("email", user.getEmail())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
         return jws;

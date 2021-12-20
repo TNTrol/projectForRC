@@ -11,6 +11,7 @@ import ru.redcollar.store.domain.entity.Offer;
 import ru.redcollar.store.domain.entity.Product;
 import ru.redcollar.store.domain.entity.StatusOffer;
 import ru.redcollar.store.domain.entity.User;
+import ru.redcollar.store.domain.model.Mail;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +33,7 @@ public class OfferService {
     private final UserService userService;
     private final ProductService productService;
     private final ModelMapper modelMapper;
+    private final SenderMailService mailService;
 
     public void saveOffer(OfferDto offerDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,6 +52,7 @@ public class OfferService {
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
         offerRepository.save(offer);
+        mailService.sendMail(new Mail(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
     }
 
     public OfferDto getOffer(long id) {
@@ -65,7 +69,11 @@ public class OfferService {
     }
 
     public void sendOffer(Long offerId) {
-        Offer offer = offerRepository.findById(offerId).get();
+        Optional<Offer> offerOptional = offerRepository.findById(offerId);
+        if (offerOptional.isEmpty()) {
+            throw new ProductDontExistException();
+        }
+        Offer offer = offerOptional.get();
         offer.setStatus(StatusOffer.SENT);
         offerRepository.save(offer);
     }
