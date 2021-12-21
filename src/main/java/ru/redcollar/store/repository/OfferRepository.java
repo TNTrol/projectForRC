@@ -10,4 +10,6 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     List<Offer> findByUserId(Long user_id, Pageable pageable);
+
+    List<Offer> findByUserLogin(String login, Pageable pageable);
 }
