@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shop_rc
+    username: tntrol
+    password: dfkjd
+jwt:
+  secret: it_is_dont_security
+mail:
+  address: http://localhost:16000/emailZ
