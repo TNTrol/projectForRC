@@ -40,6 +40,6 @@ public class Offer {
             name = "offer_to_product",
             joinColumns = @JoinColumn(name = "offer_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    private List<Product> products;
 
 }

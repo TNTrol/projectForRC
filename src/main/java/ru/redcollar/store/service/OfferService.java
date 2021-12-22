@@ -46,7 +46,7 @@ public class OfferService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Offer offer = new Offer();
         offer.setCost(cost);
-        offer.setProducts(new TreeSet<>(products));
+        offer.setProducts(products);
         offer.setUser(user);
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());

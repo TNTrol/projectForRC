@@ -39,7 +39,7 @@ public class AuthService {
                 user.setName(newUser.getName());
                 user.setEmail(newUser.getEmail());
                 user.setPassword(encoder.encode(newUser.getPassword()));
-                user.setRoles( new TreeSet<>(roleService.getDefaultRoles()));
+                user.setRoles(roleService.getDefaultRoles());
                 userService.saveUser(user);
                 JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
                 return new Token(jwtConverter.parseAuthJwtUser(userDto));
@@ -62,7 +62,6 @@ public class AuthService {
     public JwtTokenUser getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
-        JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
-        return userDto;
+        return modelMapper.map(user, JwtTokenUser.class);
     }
 }

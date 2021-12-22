@@ -72,7 +72,8 @@ public class UserService {
         List<Long> roleIds = userUpdate.getRoles().stream()
                 .map(RoleDto::getId)
                 .collect(Collectors.toList());
-        user.setRoles(new TreeSet<>(roleService.getRolesByIds(roleIds)));
+        //user.setRoles(new TreeSet<>(roleService.getRolesByIds(roleIds)));
+        user.setRoles(roleService.getRolesByIds(roleIds));
         resUser.setId(user.getId());
         resUser.setPassword(user.getPassword());
         userRepository.save(resUser);
@@ -87,7 +88,8 @@ public class UserService {
         List<Long> roleIds = userDto.getRoles().stream()
                 .map(RoleDto::getId)
                 .collect(Collectors.toList());
-        user.setRoles(new TreeSet<>(roleService.getRolesByIds(roleIds)));
+        //user.setRoles(new TreeSet<>(roleService.getRolesByIds(roleIds)));
+        user.setRoles(roleService.getRolesByIds(roleIds));
         user.setPassword(encoder.encode(userDto.getPassword()));
         user.setId(null);
         userRepository.save(user);
