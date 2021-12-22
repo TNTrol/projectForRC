@@ -15,6 +15,9 @@ import ru.redcollar.store.domain.model.Token;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 
+import java.util.HashSet;
+import java.util.TreeSet;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -36,7 +39,7 @@ public class AuthService {
                 user.setName(newUser.getName());
                 user.setEmail(newUser.getEmail());
                 user.setPassword(encoder.encode(newUser.getPassword()));
-                user.setRoles(roleService.getDefaultRoles());
+                user.setRoles( new TreeSet<>(roleService.getDefaultRoles()));
                 userService.saveUser(user);
                 JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
                 return new Token(jwtConverter.parseAuthJwtUser(userDto));

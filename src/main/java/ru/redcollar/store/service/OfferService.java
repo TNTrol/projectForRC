@@ -15,14 +15,13 @@ import ru.redcollar.store.domain.model.Mail;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
-import ru.redcollar.store.exceptions.ProductExistException;
 import ru.redcollar.store.repository.OfferRepository;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +46,7 @@ public class OfferService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Offer offer = new Offer();
         offer.setCost(cost);
-        offer.setProducts(products);
+        offer.setProducts(new TreeSet<>(products));
         offer.setUser(user);
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
@@ -63,9 +62,11 @@ public class OfferService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
         Pageable pageable = PageRequest.of(page, size);
-        return offerRepository.findByUserId(user.getId(), pageable).stream()
+        List<Long> ids = offerRepository.findAllIdsByUserIdWithPagination(user.getId(), pageable);
+        return offerRepository.findAllOffer(ids).stream()
                 .map(offer -> modelMapper.map(offer, OfferDto.class))
                 .collect(Collectors.toList());
+
     }
 
     public void sendOffer(Long offerId) {

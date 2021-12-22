@@ -17,6 +17,7 @@ import ru.redcollar.store.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,7 +72,7 @@ public class UserService {
         List<Long> roleIds = userUpdate.getRoles().stream()
                 .map(RoleDto::getId)
                 .collect(Collectors.toList());
-        user.setRoles(roleService.getRolesByIds(roleIds));
+        user.setRoles(new TreeSet<>(roleService.getRolesByIds(roleIds)));
         resUser.setId(user.getId());
         resUser.setPassword(user.getPassword());
         userRepository.save(resUser);
@@ -86,7 +87,7 @@ public class UserService {
         List<Long> roleIds = userDto.getRoles().stream()
                 .map(RoleDto::getId)
                 .collect(Collectors.toList());
-        user.setRoles(roleService.getRolesByIds(roleIds));
+        user.setRoles(new TreeSet<>(roleService.getRolesByIds(roleIds)));
         user.setPassword(encoder.encode(userDto.getPassword()));
         user.setId(null);
         userRepository.save(user);
@@ -106,9 +107,8 @@ public class UserService {
             return Collections.emptyList();
         }
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findAll(pageable)
-                .stream()
-                .map(user -> modelMapper.map(user, UserDto.class))
+        List<Long> ids = userRepository.findAllIdsWithPagination(pageable);
+        return userRepository.findAllUser(ids).stream().map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }
 }
