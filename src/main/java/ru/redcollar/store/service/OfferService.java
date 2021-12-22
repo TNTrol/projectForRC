@@ -18,10 +18,7 @@ import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.repository.OfferRepository;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,14 +36,23 @@ public class OfferService {
         User user = userService.getUserByLogin((String) authentication.getCredentials());
         List<Long> ids = offerDto.getProducts().stream()
                 .map(ProductDto::getId)
+                .sorted()
                 .collect(Collectors.toList());
         List<Product> products = productService.getProductsByIds(ids);
-        BigDecimal cost = products.stream()
-                .map(Product::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal cost = new BigDecimal(0);
+        Long number = ids.get(0);
+        List<Product> productsRes = new ArrayList<>();
+        int last = 0;
+        for (Long id : ids) {
+            if (!Objects.equals(number, id)) {
+                last++;
+            }
+            productsRes.add(products.get(last));
+            cost = cost.add(products.get(last).getCost());
+        }
         Offer offer = new Offer();
         offer.setCost(cost);
-        offer.setProducts(products);
+        offer.setProducts(productsRes);
         offer.setUser(user);
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
