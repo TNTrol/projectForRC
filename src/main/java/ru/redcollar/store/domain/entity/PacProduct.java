@@ -18,14 +18,15 @@ public class PacProduct implements Serializable {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
     @Id
     @ManyToOne
     private Offer offer;
+    
     @Column(name = "count")
     private Integer count;
 
-    public String toString()
-    {
+    public String toString() {
         return "";
     }
 }

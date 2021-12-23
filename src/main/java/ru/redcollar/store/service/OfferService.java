@@ -37,30 +37,18 @@ public class OfferService {
                 .sorted()
                 .collect(Collectors.toList());
         List<Product> products = productService.getProductsByIds(ids);
-        Long number = ids.get(0);
-        List<PacProduct> productsRes = new ArrayList<>();
-        int last = 0, ind = 0;
-        PacProduct pacProduct = new PacProduct();
-        pacProduct.setProduct(products.get(ind));
-        productsRes.add(pacProduct);
-        for (Long id : ids) {
-            if (!Objects.equals(number, id)) {
-                number = id;
-                pacProduct = new PacProduct();
-                productsRes.add(pacProduct);
-                pacProduct.setProduct(products.get(ind + 1));
-                last = 0;
-                ind++;
-            }
-            last++;
-            pacProduct.setCount(last);
+        List<PacProduct> productsRes = offerDto.getProducts().stream()
+                .map(p -> modelMapper.map(p, PacProduct.class))
+                .collect(Collectors.toList());
+        for (int i = 0; i < products.size(); i++) {
+            productsRes.get(i).setProduct(products.get(i));
         }
         BigDecimal cost = productsRes.stream()
-                .map(pacProduct1 -> pacProduct1.getProduct().getCost().multiply(new BigDecimal( pacProduct1.getCount())))
+                .map(pacProduct1 -> pacProduct1.getProduct().getCost().multiply(new BigDecimal(pacProduct1.getCount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         Offer offer = new Offer();
         offer.setCost(cost);
-        offer.setProducts(productsRes);
+        offer.setProducts((productsRes));
         offer.setUser(user);
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());

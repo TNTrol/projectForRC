@@ -112,7 +112,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public Long getIdByLogin(String login){
+    public Long getIdByLogin(String login) {
         return userRepository.findIdByLogin(login);
     }
 }
