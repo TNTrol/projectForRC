@@ -8,6 +8,7 @@ import ru.redcollar.store.domain.entity.Offer;
 import ru.redcollar.store.domain.entity.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface OfferRepository extends JpaRepository<Offer, Long> {
 
@@ -18,6 +19,6 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     @Query(value = "SELECT o.id FROM Offer o WHERE o.user.id=(:id)")
     List<Long> findAllIdsByUserIdWithPagination(@Param("id") Long id, Pageable pageable);
 
-    @Query(value = "SELECT o FROM Offer o LEFT JOIN FETCH o.products WHERE o.id IN (:ids)")
+    @Query(value = "SELECT o FROM Offer o LEFT JOIN PacProduct po ON po.offer.id = o.id JOIN Product p ON p.id = po.product.id  WHERE o.id IN (:ids)")
     List<Offer> findAllOffer(@Param("ids") List<Long> ids);
 }

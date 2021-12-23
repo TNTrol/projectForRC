@@ -111,4 +111,8 @@ public class UserService {
         return userRepository.findAllUser(ids).stream().map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }
+
+    public Long getIdByLogin(String login){
+        return userRepository.findIdByLogin(login);
+    }
 }

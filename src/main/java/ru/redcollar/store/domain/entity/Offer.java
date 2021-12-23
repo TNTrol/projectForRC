@@ -21,7 +21,7 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -35,11 +35,20 @@ public class Offer {
     @Enumerated(EnumType.STRING)
     private StatusOffer status;
 
-    @ManyToMany
-    @JoinTable(
-            name = "offer_to_product",
-            joinColumns = @JoinColumn(name = "offer_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
+    private List<PacProduct> products;
+
+    @PrePersist
+    private void prePersist() {
+        products.forEach( c -> c.setOffer(this));
+    }
+
+    public Offer(Long id, BigDecimal cost, Instant date, StatusOffer status, List<PacProduct> products){
+        this.products = products;
+        this.id = id;
+        this.cost = cost;
+        this.date = date;
+        this.status = status;
+    }
 
 }

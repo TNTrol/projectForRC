@@ -29,5 +29,5 @@ public class OfferDto {
     @NotNull
     @NotEmpty
     @Valid
-    private List<ProductDto> products;
+    private List<PackProductDto> products;
 }
