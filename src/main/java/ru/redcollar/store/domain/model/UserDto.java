@@ -15,16 +15,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+
     @NotNull
     private String login;
+
     @NotNull
     private String name;
+
     @NotNull
     @NotEmpty
     @Valid
     private List<RoleDto> roles;
+
     @NotNull
     private String password;
+
     @NotNull
     private String email;
 }

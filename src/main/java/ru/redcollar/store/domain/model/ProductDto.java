@@ -16,15 +16,20 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDto {
+
     @Null(groups = OnCreateProduct.class)
     @NotNull(groups = {OnUpdateProduct.class, OnCreateOffer.class})
     private Long id;
+
     @NotNull(groups = {OnCreateProduct.class, OnUpdateProduct.class})
     private String description;
+
     @NotNull(groups = {OnCreateProduct.class, OnUpdateProduct.class})
     private String name;
+
     @NotNull(groups = {OnCreateProduct.class, OnUpdateProduct.class})
     private TypeProduct type;
+
     @NotNull(groups = {OnCreateProduct.class, OnUpdateProduct.class})
     private BigDecimal cost;
 }

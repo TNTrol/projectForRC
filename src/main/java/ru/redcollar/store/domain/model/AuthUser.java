@@ -12,8 +12,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthUser {
+
     @NotNull
     private String login;
+
     @NotNull
     private String password;
 }

@@ -3,12 +3,14 @@ package ru.redcollar.store.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "offer")
@@ -35,20 +37,20 @@ public class Offer {
     @Enumerated(EnumType.STRING)
     private StatusOffer status;
 
-    @OneToMany(mappedBy = "offer", cascade = CascadeType.PERSIST)
-    private List<PacProduct> products;
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private List<PackProduct> products;
 
     @PrePersist
     private void prePersist() {
         products.forEach(c -> c.setOffer(this));
     }
 
-//    public Offer(Long id, BigDecimal cost, Instant date, StatusOffer status, List<PacProduct> products){
-//        this.products = products;
-//        this.id = id;
-//        this.cost = cost;
-//        this.date = date;
-//        this.status = status;
-//    }
+    public Offer(Long id, BigDecimal cost, Instant date, StatusOffer status) {
+        this.id = id;
+        this.cost = cost;
+        this.date = date;
+        this.status = status;
+        this.products = new ArrayList<>();
+    }
 
 }

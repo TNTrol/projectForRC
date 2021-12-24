@@ -8,4 +8,4 @@ spring:
 jwt:
   secret: it_is_dont_security
 mail:
-  address: http://localhost:16000/emailZ
+  address: http://localhost:16000/email

@@ -8,12 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.*;
-import ru.redcollar.store.domain.model.Mail;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.domain.model.PackProductDto;
-import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.repository.OfferRepository;
+import ru.redcollar.store.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -27,6 +26,7 @@ public class OfferService {
     private final UserService userService;
     private final ProductService productService;
     private final ModelMapper modelMapper;
+    private final ProductRepository productRepository;
     private final SenderMailService mailService;
 
     public void saveOffer(OfferDto offerDto) {
@@ -37,8 +37,8 @@ public class OfferService {
                 .sorted()
                 .collect(Collectors.toList());
         List<Product> products = productService.getProductsByIds(ids);
-        List<PacProduct> productsRes = offerDto.getProducts().stream()
-                .map(p -> modelMapper.map(p, PacProduct.class))
+        List<PackProduct> productsRes = offerDto.getProducts().stream()
+                .map(p -> modelMapper.map(p, PackProduct.class))
                 .collect(Collectors.toList());
         for (int i = 0; i < products.size(); i++) {
             productsRes.get(i).setProduct(products.get(i));
@@ -65,10 +65,16 @@ public class OfferService {
         Long id = userService.getIdByLogin((String) authentication.getCredentials());
         Pageable pageable = PageRequest.of(page, size);
         List<Long> ids = offerRepository.findAllIdsByUserIdWithPagination(id, pageable);
-        return offerRepository.findAllOffer(ids).stream()
-                .map(offer -> modelMapper.map(offer, OfferDto.class))
-                .collect(Collectors.toList());
-
+        List<PackProduct> products = productRepository.findAllPackProductByOfferIds(ids);
+        List<Offer> offers = offerRepository.findAllOffer(ids);
+        List<OfferDto> resOffers = new ArrayList<>();
+        for(int i = 0, p = 0; i < offers.size(); i++){
+            resOffers.add(modelMapper.map(offers.get(i), OfferDto.class));
+            for(; p < products.size() && Objects.equals(resOffers.get(i).getId(), products.get(p).getOffer().getId()); p++) {
+                resOffers.get(i).getProducts().add(modelMapper.map(products.get(p), PackProductDto.class));
+            }
+        }
+        return resOffers;
     }
 
     public void sendOffer(Long offerId) {

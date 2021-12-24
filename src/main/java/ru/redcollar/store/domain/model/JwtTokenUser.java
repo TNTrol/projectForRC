@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtTokenUser {
+    
     private Long id;
     private String login;
     private String name;

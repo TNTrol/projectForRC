@@ -12,12 +12,16 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewUser {
+
     @NotNull
     private String login;
+
     @NotNull
     private String password;
+
     @NotNull
     private String name;
+
     @NotNull
     private String email;
 }
