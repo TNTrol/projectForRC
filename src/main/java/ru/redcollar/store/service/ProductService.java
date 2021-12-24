@@ -11,8 +11,6 @@ import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.exceptions.ProductExistException;
 import ru.redcollar.store.repository.ProductRepository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;

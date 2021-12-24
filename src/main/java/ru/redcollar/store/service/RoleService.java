@@ -1,15 +1,11 @@
 package ru.redcollar.store.service;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.Role;
 import ru.redcollar.store.repository.RoleRepository;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

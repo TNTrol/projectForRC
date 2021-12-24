@@ -17,7 +17,6 @@ import ru.redcollar.store.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Service

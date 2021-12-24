@@ -15,9 +15,6 @@ import ru.redcollar.store.domain.model.Token;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 
-import java.util.HashSet;
-import java.util.TreeSet;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j

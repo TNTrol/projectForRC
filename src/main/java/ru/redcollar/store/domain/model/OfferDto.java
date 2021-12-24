@@ -8,11 +8,9 @@ import lombok.NoArgsConstructor;
 import ru.redcollar.store.domain.entity.StatusOffer;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
