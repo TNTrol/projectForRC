@@ -15,8 +15,6 @@ import java.util.List;
 @Mapper(unmappedSourcePolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface OfferMapper {
 
-    //@Mapping(target = "user", ignore = true)
-    @Mapping(target = "products", ignore = true)
     OfferDto offerToOfferDto(Offer offer);
 
     Offer offerDtoToOffer(OfferDto offerDto);
