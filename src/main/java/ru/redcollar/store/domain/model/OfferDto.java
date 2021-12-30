@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -31,5 +32,5 @@ public class OfferDto {
     @NotNull
     @NotEmpty
     @Valid
-    private List<PackProductDto> products;
+    private List<PackProductDto> products = new ArrayList<>();
 }

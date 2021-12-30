@@ -36,7 +36,7 @@ public class Offer {
     private StatusOffer status;
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<PackProduct> products;
+    private List<PackProduct> products = new ArrayList<>();
 
     @PrePersist
     private void prePersist() {

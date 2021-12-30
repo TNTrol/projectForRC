@@ -18,7 +18,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     @Query(value = "SELECT o.id FROM Offer o WHERE o.user.id=(:id)")
     List<Long> findAllIdsByUserIdWithPagination(@Param("id") Long id, Pageable pageable);
 
-    @Query(value = "SELECT new Offer(o.id, o.cost, o.date, o.status) FROM Offer o WHERE o.id IN (:ids) ORDER BY o.id")
+    @Query(value = "SELECT o FROM Offer o WHERE o.id IN (:ids) ORDER BY o.id")
     List<Offer> findAllOffer(@Param("ids") List<Long> ids);
 
 
