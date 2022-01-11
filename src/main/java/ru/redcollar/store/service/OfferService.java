@@ -1,7 +1,6 @@
 package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.*;
 import ru.redcollar.store.domain.model.OfferDto;
-import ru.redcollar.store.domain.model.PackProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.mapper.OfferMapper;
 import ru.redcollar.store.mapper.ProductMapper;
@@ -42,7 +40,7 @@ public class OfferService {
                 .sorted()
                 .collect(Collectors.toList());
         List<Product> products = productService.getProductsByIds(ids);
-        List<PackProduct> productsRes = productMapper.listPackProductDtoToListPackProduct(offerDto.getProducts());
+        List<PackProduct> productsRes = productMapper.packProductDtoToPackProduct(offerDto.getProducts());
         for (int i = 0; i < products.size(); i++) {
             productsRes.get(i).setProduct(products.get(i));
         }
@@ -67,8 +65,19 @@ public class OfferService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long id = userService.getIdByLogin((String) authentication.getCredentials());
         Pageable pageable = PageRequest.of(page, size);
-        List<Long> ids = offerRepository.findAllIdsByUserIdWithPagination(id, pageable);
-        return offerMapper.offerListToOfferDtoList(offerRepository.findAllOffer(ids));
+        List<Offer> offers = offerRepository.findByUserId(id, pageable);
+        List<OfferDto> offerDtos = offerMapper.toDto(offers);
+        List<Long> ids = offerDtos.stream()
+                .map(OfferDto::getId)
+                .toList();
+        List<PackProduct> products = productRepository.findAllPackProductByOfferIds(ids);
+        int indexProduct = 0;
+        for (OfferDto offer : offerDtos) {
+            for (; indexProduct < products.size() && Objects.equals(offer.getId(), products.get(indexProduct).getOffer().getId()); indexProduct++) {
+                offer.getProducts().add(productMapper.packProductToPackProductDto(products.get(indexProduct)));
+            }
+        }
+        return offerDtos;
     }
 
     public void sendOffer(Long offerId) {

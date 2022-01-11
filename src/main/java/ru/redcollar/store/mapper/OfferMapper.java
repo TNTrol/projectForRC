@@ -3,10 +3,6 @@ package ru.redcollar.store.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.Offer;
 import ru.redcollar.store.domain.model.OfferDto;
 
@@ -15,9 +11,10 @@ import java.util.List;
 @Mapper(unmappedSourcePolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface OfferMapper {
 
-    OfferDto offerToOfferDto(Offer offer);
+    @Mapping(target = "products", ignore = true)
+    OfferDto ToDto(Offer offer);
 
-    Offer offerDtoToOffer(OfferDto offerDto);
+    Offer fromDto(OfferDto offerDto);
 
-    List<OfferDto> offerListToOfferDtoList(List<Offer> offer);
+    List<OfferDto> toDto(List<Offer> offer);
 }

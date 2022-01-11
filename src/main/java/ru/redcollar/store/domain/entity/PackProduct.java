@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class PackProduct implements Serializable {
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
     @Id
