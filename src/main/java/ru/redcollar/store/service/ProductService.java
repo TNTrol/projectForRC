@@ -26,13 +26,13 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public void saveProduct(ProductDto product) {
-        if (productRepository.existsByName(product.getName())) {
-            log.error("Product {} exist!", product.getName());
-            throw new ProductExistException(product.getName(), product.getType().toString());
+    public void saveProduct(ProductDto productDto) {
+        if (productRepository.existsByName(productDto.getName())) {
+            log.error("Product {} exist!", productDto.getName());
+            throw new ProductExistException(productDto.getName(), productDto.getType().toString());
         }
-        Product product1 = productMapper.productDtoToProduct(product);
-        productRepository.save(product1);
+        Product product = productMapper.productDtoToProduct(productDto);
+        productRepository.save(product);
     }
 
     public void updateProduct(ProductDto productDto) {
