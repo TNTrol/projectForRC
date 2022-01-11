@@ -38,11 +38,6 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<PackProduct> products = new ArrayList<>();
 
-    @PrePersist
-    private void prePersist() {
-        products.forEach(c -> c.setOffer(this));
-    }
-
     public Offer(Long id, BigDecimal cost, Instant date, StatusOffer status) {
         this.id = id;
         this.cost = cost;

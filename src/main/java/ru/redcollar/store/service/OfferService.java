@@ -39,13 +39,14 @@ public class OfferService {
                 .collect(Collectors.toList());
         List<Product> products = productService.getProductsByIds(ids);
         List<PackProduct> productsRes = productMapper.packProductDtoToPackProduct(offerDto.getProducts());
+        Offer offer = new Offer();
         for (int i = 0; i < products.size(); i++) {
             productsRes.get(i).setProduct(products.get(i));
+            productsRes.get(i).setOffer(offer);
         }
         BigDecimal cost = productsRes.stream()
                 .map(pacProduct1 -> pacProduct1.getProduct().getCost().multiply(new BigDecimal(pacProduct1.getCount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        Offer offer = new Offer();
         offer.setCost(cost);
         offer.setProducts((productsRes));
         offer.setUser(user);
