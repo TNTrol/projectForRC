@@ -1,7 +1,6 @@
 package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -26,8 +25,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final ModelMapper modelMapper;
-    private final ProductRepository productRepository;
+    private final PackProductSrvice packProductSrvice;
     private final SenderMailService mailService;
     private final OfferMapper offerMapper;
     private final ProductMapper productMapper;
@@ -58,7 +56,7 @@ public class OfferService {
     }
 
     public OfferDto getOffer(long id) {
-        return modelMapper.map(offerRepository.findById(id).get(), OfferDto.class);
+        return offerMapper.toDto(offerRepository.findById(id).get());
     }
 
     public List<OfferDto> getAllOffer(int page, int size) {
@@ -70,7 +68,7 @@ public class OfferService {
         List<Long> ids = offerDtos.stream()
                 .map(OfferDto::getId)
                 .toList();
-        List<PackProduct> products = productRepository.findAllPackProductByOfferIds(ids);
+        List<PackProduct> products = packProductSrvice.findAllPackProductByOfferIds(ids);
         int indexProduct = 0;
         for (OfferDto offer : offerDtos) {
             for (; indexProduct < products.size() && Objects.equals(offer.getId(), products.get(indexProduct).getOffer().getId()); indexProduct++) {

@@ -12,7 +12,7 @@ import java.util.List;
 public interface OfferMapper {
 
     @Mapping(target = "products", ignore = true)
-    OfferDto ToDto(Offer offer);
+    OfferDto toDto(Offer offer);
 
     Offer fromDto(OfferDto offerDto);
 
