@@ -37,13 +37,13 @@ CREATE TABLE stock (
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
-CREATE TABLE offer_to_product (
+CREATE TABLE pack_product (
+    id SERIAL PRIMARY KEY,
     product_id INTEGER,
     offer_id INTEGER NOT NULL,
     count INTEGER NOT NULL,
     FOREIGN KEY(product_id) REFERENCES product(id) ON DELETE SET NULL,
-    FOREIGN KEY(offer_id) REFERENCES offer(id),
-    PRIMARY KEY(product_id, offer_id)
+    FOREIGN KEY(offer_id) REFERENCES offer(id)
 );
 
 CREATE TABLE user_to_role (
