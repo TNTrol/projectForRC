@@ -9,10 +9,9 @@ import ru.redcollar.store.domain.entity.Product;
 import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.exceptions.ProductExistException;
+import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.ProductRepository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
@@ -25,15 +24,15 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ModelMapper modelMapper;
+    private final ProductMapper productMapper;
 
-    public void saveProduct(ProductDto product) {
-        if (productRepository.existsByName(product.getName())) {
-            log.error("Product {} exist!", product.getName());
-            throw new ProductExistException(product.getName(), product.getType().toString());
+    public void saveProduct(ProductDto productDto) {
+        if (productRepository.existsByName(productDto.getName())) {
+            log.error("Product {} exist!", productDto.getName());
+            throw new ProductExistException(productDto.getName(), productDto.getType().toString());
         }
-        Product product1 = modelMapper.map(product, Product.class);
-        productRepository.save(product1);
+        Product product = productMapper.productDtoToProduct(productDto);
+        productRepository.save(product);
     }
 
     public void updateProduct(ProductDto productDto) {
@@ -41,7 +40,7 @@ public class ProductService {
             log.error("Product {} don't exist!", productDto.getName());
             throw new ProductDontExistException();
         }
-        Product product = modelMapper.map(productDto, Product.class);
+        Product product = productMapper.productDtoToProduct(productDto);
         productRepository.save(product);
     }
 
@@ -56,12 +55,12 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable)
                 .stream()
-                .map(product -> modelMapper.map(product, ProductDto.class))
+                .map(productMapper::productToProductDto)
                 .collect(Collectors.toList());
     }
 
     public ProductDto getUser(Long id) {
-        return modelMapper.map(productRepository.getById(id), ProductDto.class);
+        return productMapper.productToProductDto(productRepository.getById(id));
     }
 
     public List<Product> getProductsByIds(List<Long> ids) {

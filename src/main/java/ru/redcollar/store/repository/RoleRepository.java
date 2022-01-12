@@ -2,7 +2,6 @@ package ru.redcollar.store.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.redcollar.store.domain.entity.Product;
 import ru.redcollar.store.domain.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 

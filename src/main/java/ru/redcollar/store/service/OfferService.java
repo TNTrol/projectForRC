@@ -1,28 +1,21 @@
 package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.entity.Offer;
-import ru.redcollar.store.domain.entity.Product;
-import ru.redcollar.store.domain.entity.StatusOffer;
-import ru.redcollar.store.domain.entity.User;
-import ru.redcollar.store.domain.model.Mail;
+import ru.redcollar.store.domain.entity.*;
 import ru.redcollar.store.domain.model.OfferDto;
-import ru.redcollar.store.domain.model.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
-import ru.redcollar.store.exceptions.ProductExistException;
+import ru.redcollar.store.mapper.OfferMapper;
+import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.OfferRepository;
+import ru.redcollar.store.repository.ProductRepository;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,40 +25,59 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final ModelMapper modelMapper;
+    private final PackProductSrvice packProductSrvice;
     private final SenderMailService mailService;
+    private final OfferMapper offerMapper;
+    private final ProductMapper productMapper;
 
     public void saveOffer(OfferDto offerDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
         List<Long> ids = offerDto.getProducts().stream()
-                .map(ProductDto::getId)
+                .map(p -> p.getProduct().getId())
+                .sorted()
                 .collect(Collectors.toList());
         List<Product> products = productService.getProductsByIds(ids);
-        BigDecimal cost = products.stream()
-                .map(Product::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        List<PackProduct> productsRes = productMapper.packProductDtoToPackProduct(offerDto.getProducts());
         Offer offer = new Offer();
+        for (int i = 0; i < products.size(); i++) {
+            productsRes.get(i).setProduct(products.get(i));
+            productsRes.get(i).setOffer(offer);
+        }
+        BigDecimal cost = productsRes.stream()
+                .map(pacProduct1 -> pacProduct1.getProduct().getCost().multiply(new BigDecimal(pacProduct1.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         offer.setCost(cost);
-        offer.setProducts(products);
+        offer.setProducts((productsRes));
         offer.setUser(user);
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
         offerRepository.save(offer);
-        mailService.sendMail(new Mail(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
+        //mailService.sendMail(new Mail(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
     }
 
     public OfferDto getOffer(long id) {
-        return modelMapper.map(offerRepository.findById(id).get(), OfferDto.class);
+        return offerMapper.toDto(offerRepository.findById(id).get());
     }
 
     public List<OfferDto> getAllOffer(int page, int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByLogin((String) authentication.getCredentials());
+        String login = (String) authentication.getCredentials();
         Pageable pageable = PageRequest.of(page, size);
-        return offerRepository.findByUserId(user.getId(), pageable).stream()
-                .map(offer -> modelMapper.map(offer, OfferDto.class))
-                .collect(Collectors.toList());
+        List<Offer> offers = offerRepository.findByUserLogin(login, pageable);
+        List<OfferDto> offerDtos = offerMapper.toDto(offers);
+        List<Long> ids = offerDtos.stream()
+                .map(OfferDto::getId)
+                .toList();
+        List<PackProduct> products = packProductSrvice.findAllPackProductByOfferIds(ids);
+        int indexProduct = 0;
+        for (OfferDto offer : offerDtos) {
+            for (int index = indexProduct; index < products.size() && Objects.equals(offer.getId(), products.get(index).getOffer().getId()); index++, indexProduct++) {
+                PackProduct packProduct = products.get(index);
+                offer.getProducts().add(productMapper.packProductToPackProductDto(packProduct));
+            }
+        }
+        return offerDtos;
     }
 
     public void sendOffer(Long offerId) {

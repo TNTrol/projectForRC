@@ -8,14 +8,14 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="product")
+@Table(name = "product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "description")

@@ -14,6 +14,7 @@ import ru.redcollar.store.domain.model.NewUser;
 import ru.redcollar.store.domain.model.Token;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
+import ru.redcollar.store.mapper.UserMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +25,13 @@ public class AuthService {
     private final UserService userService;
     private final JwtConverter jwtConverter;
     private final PasswordEncoder encoder;
-    private final ModelMapper modelMapper;
+    private final UserMapper userMapper;
 
     public Token registerUser(NewUser newUser) {
         String temp = newUser.getLogin();
         if (!userService.existUserByLogin(newUser.getLogin())) {
             temp = newUser.getEmail();
-            if(!userService.existsUserByEmail(newUser.getEmail())) {
+            if (!userService.existsUserByEmail(newUser.getEmail())) {
                 User user = new User();
                 user.setLogin(newUser.getLogin());
                 user.setName(newUser.getName());
@@ -38,7 +39,7 @@ public class AuthService {
                 user.setPassword(encoder.encode(newUser.getPassword()));
                 user.setRoles(roleService.getDefaultRoles());
                 userService.saveUser(user);
-                JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
+                JwtTokenUser userDto = userMapper.userToJwtTokenUser(user);
                 return new Token(jwtConverter.parseAuthJwtUser(userDto));
             }
         }
@@ -52,14 +53,13 @@ public class AuthService {
             log.error("Incorrect login({}) or password", login);
             throw new BadLoginException("Incorrect login or password");
         }
-        JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
+        JwtTokenUser userDto = userMapper.userToJwtTokenUser(user);
         return new Token(jwtConverter.parseAuthJwtUser(userDto));
     }
 
     public JwtTokenUser getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
-        JwtTokenUser userDto = modelMapper.map(user, JwtTokenUser.class);
-        return userDto;
+        return userMapper.userToJwtTokenUser(user);
     }
 }

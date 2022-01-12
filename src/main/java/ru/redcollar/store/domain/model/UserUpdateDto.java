@@ -15,14 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUpdateDto {
+
     @NotNull
     @Min(6)
     @Max(29)
     private String login;
+
     @NotNull
     @Min(2)
     @Max(29)
     private String name;
+
     @NotNull
     @NotEmpty
     @Valid

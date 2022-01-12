@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -15,16 +13,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+
     @NotNull
     private String login;
+
     @NotNull
     private String name;
+
     @NotNull
     @NotEmpty
     @Valid
     private List<RoleDto> roles;
+
     @NotNull
     private String password;
+
     @NotNull
     private String email;
 }
