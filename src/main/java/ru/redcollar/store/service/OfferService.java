@@ -62,10 +62,22 @@ public class OfferService {
 
     public List<OfferDto> getAllOffer(int page, int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long id = userService.getIdByLogin((String) authentication.getCredentials());
+        String login = (String) authentication.getCredentials();
         Pageable pageable = PageRequest.of(page, size);
-        List<Offer> offers = offerRepository.findByUserId(id, pageable);
-        return offerMapper.toDto(offers);
+        List<Offer> offers = offerRepository.findByUserLogin(login, pageable);
+        List<OfferDto> offerDtos = offerMapper.toDto(offers);
+        List<Long> ids = offerDtos.stream()
+                .map(OfferDto::getId)
+                .toList();
+        List<PackProduct> products = packProductSrvice.findAllPackProductByOfferIds(ids);
+        int indexProduct = 0;
+        for (OfferDto offer : offerDtos) {
+            for (int index = indexProduct; index < products.size() && Objects.equals(offer.getId(), products.get(index).getOffer().getId()); index++, indexProduct++) {
+                PackProduct packProduct = products.get(index);
+                offer.getProducts().add(productMapper.packProductToPackProductDto(packProduct));
+            }
+        }
+        return offerDtos;
     }
 
     public void sendOffer(Long offerId) {

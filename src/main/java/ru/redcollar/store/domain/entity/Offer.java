@@ -38,12 +38,4 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<PackProduct> products = new ArrayList<>();
 
-    public Offer(Long id, BigDecimal cost, Instant date, StatusOffer status) {
-        this.id = id;
-        this.cost = cost;
-        this.date = date;
-        this.status = status;
-        this.products = new ArrayList<>();
-    }
-
 }
