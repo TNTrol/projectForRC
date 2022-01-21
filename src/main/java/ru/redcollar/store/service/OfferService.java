@@ -13,7 +13,6 @@ import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.mapper.OfferMapper;
 import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.OfferRepository;
-import ru.redcollar.store.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -27,7 +26,7 @@ public class OfferService {
     private final UserService userService;
     private final ProductService productService;
     private final PackProductSrvice packProductSrvice;
-    private final SenderMailService mailService;
+    private final MailService mailService;
     private final OfferMapper offerMapper;
     private final ProductMapper productMapper;
 

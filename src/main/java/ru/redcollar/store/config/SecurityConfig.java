@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import ru.redcollar.store.component.JwtFilter;
+import ru.redcollar.store.domain.model.KeycloakData;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web){
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v3/api-docs/**",
                 "/configuration/ui",
                 "/swagger-resources/**",
@@ -52,5 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui/**",
                 "/swagger-ui",
                 "/webjars/**");
+    }
+
+    @Bean
+    public KeycloakData keycloakData() {
+        return new KeycloakData("user1", "password", "password", "mail");
     }
 }
