@@ -3,10 +3,10 @@ package ru.redcollar.store.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.redcollar.store.component.FeignClientInterceptor;
 import ru.redcollar.store.component.KeycloakAuthorization;
 import ru.redcollar.store.component.SenderMail;
 import ru.redcollar.store.domain.model.KeycloakData;
-import ru.redcollar.store.domain.model.KeycloakToken;
 import ru.redcollar.store.domain.model.Mail;
 import ru.redcollar.store.exceptions.MailServiceException;
 
@@ -18,12 +18,12 @@ public class MailService {
     private final SenderMail senderMail;
     private final KeycloakAuthorization keycloakAuthorization;
     private final KeycloakData keycloakData;
-    private KeycloakToken token;
+    private final FeignClientInterceptor feignClientInterceptor;
 
     public void sendMail(Mail mail) {
-        if (token == null) {
+        if (feignClientInterceptor.getToken() == null) {
             try {
-                token = keycloakAuthorization.getToken(keycloakData.getAuthorizationData());
+                feignClientInterceptor.setToken(keycloakAuthorization.getToken(keycloakData.getAuthorizationData()));
                 log.info("Mail's client authentication");
             } catch (Exception e) {
                 log.error("Mail's client don't authentication");
@@ -31,7 +31,7 @@ public class MailService {
             }
         }
         try {
-            senderMail.sendMail(token.getAccessToken(), mail);
+            senderMail.sendMail(mail);
             log.info("Send check of offer");
         } catch (Exception e) {
             log.error("Mail don't sent!");
