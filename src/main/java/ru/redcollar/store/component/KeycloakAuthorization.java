@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.redcollar.store.domain.model.KeycloakToken;
 import java.util.Map;
 
-@FeignClient(name = "KeycloakService", url = "${mail.auth-address}")
+@FeignClient(name = "KeycloakClient", url = "${mail.auth-address}")
 public interface KeycloakAuthorization {
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)

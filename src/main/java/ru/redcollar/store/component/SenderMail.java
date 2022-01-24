@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.redcollar.store.domain.model.Mail;
 
-@FeignClient(name = "MailService", url = "${mail.address}")
+@FeignClient(name = "MailClient", url = "${mail.address}")
 public interface SenderMail {
 
     @PostMapping
