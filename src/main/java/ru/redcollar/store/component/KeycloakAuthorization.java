@@ -9,5 +9,5 @@ import ru.redcollar.store.domain.model.KeycloakToken;
 public interface KeycloakAuthorization {
 
     @PostMapping(consumes = "application/x-www-form-urlencoded")
-    KeycloakToken sendMail(KeycloakData data);
+    KeycloakToken getToken(KeycloakData data);
 }

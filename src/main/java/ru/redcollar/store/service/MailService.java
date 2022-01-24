@@ -21,7 +21,7 @@ public class MailService {
 
     public void sendMail(Mail mail) {
         if (token == null) {
-            token = keycloakAuthorization.sendMail(keycloakData);
+            token = keycloakAuthorization.getToken(keycloakData);
             log.info("Mail's client authentication");
         }
         senderMail.sendMail(token.getAccess_token(), mail);
