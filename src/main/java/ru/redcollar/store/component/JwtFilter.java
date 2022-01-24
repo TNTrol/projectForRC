@@ -33,8 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             List<String> roles = userJwt.getRoles()
                     .stream()
-                    .map(role -> "ROLE_" + role.getName().toUpperCase())
-                    .collect(Collectors.toList());
+                    .map(role -> "ROLE_" + role.getName().toUpperCase()).toList();
 
             List<GrantedAuthority> authorities = new ArrayList<>();
             for (String role : roles) {

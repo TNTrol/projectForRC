@@ -59,4 +59,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public KeycloakData keycloakData() {
         return new KeycloakData("user1", "password", "password", "mail");
     }
+
 }

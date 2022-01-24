@@ -1,13 +1,15 @@
 package ru.redcollar.store.component;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.redcollar.store.domain.model.KeycloakData;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.redcollar.store.domain.model.KeycloakToken;
+import java.util.Map;
 
 @FeignClient(name = "KeycloakService", url = "${mail.auth-address}")
 public interface KeycloakAuthorization {
 
-    @PostMapping(consumes = "application/x-www-form-urlencoded")
-    KeycloakToken getToken(KeycloakData data);
+    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    KeycloakToken getToken(@RequestBody Map<String, ?> data);
 }

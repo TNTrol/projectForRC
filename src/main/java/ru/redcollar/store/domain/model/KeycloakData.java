@@ -1,24 +1,19 @@
 package ru.redcollar.store.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class KeycloakData {
 
-    @JsonProperty("username")
-    private String username;
+    private Map<String, String> authorizationData = new HashMap<>();
 
-    @JsonProperty("password")
-    private String password;
-
-    @JsonProperty("grant_type")
-    private String grant_type;
-
-    @JsonProperty("client_id")
-    private String client_id;
+    public KeycloakData(String name, String password, String grantType, String clientId){
+        authorizationData.put("username", name);
+        authorizationData.put("password", password);
+        authorizationData.put("grant_type", grantType);
+        authorizationData.put("client_id", clientId);
+    }
 }
