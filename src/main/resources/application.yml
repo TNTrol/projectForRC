@@ -12,3 +12,4 @@ server:
 mail:
   address: localhost:16000/email
   auth-address: localhost:8080/auth/realms/Mail/protocol/openid-connect/token
+  data: '{"password": "password", "username": "user1", "client_id": "mail", "grant_type": "password"}'
