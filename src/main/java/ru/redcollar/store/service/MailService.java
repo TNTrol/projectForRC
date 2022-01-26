@@ -3,8 +3,8 @@ package ru.redcollar.store.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.component.SenderMail;
-import ru.redcollar.store.domain.model.Mail;
+import ru.redcollar.store.component.MailClient;
+import ru.redcollar.store.domain.model.MailDto;
 import ru.redcollar.store.exceptions.MailServiceException;
 
 @Service
@@ -12,9 +12,9 @@ import ru.redcollar.store.exceptions.MailServiceException;
 @Slf4j
 public class MailService {
 
-    private final SenderMail senderMail;
+    private final MailClient senderMail;
 
-    public void sendMail(Mail mail) {
+    public void sendMail(MailDto mail) {
         try {
             senderMail.sendMail(mail);
             log.info("Send check of offer");

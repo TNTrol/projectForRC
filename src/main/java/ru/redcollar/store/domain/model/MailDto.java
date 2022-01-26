@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Mail {
+public class MailDto {
 
     private String email;
     private String subject;

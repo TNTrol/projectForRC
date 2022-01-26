@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.component.KeycloakAuthorization;
+import ru.redcollar.store.component.KeycloakAuthorizationClient;
 import ru.redcollar.store.exceptions.MailServiceException;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 @Slf4j
 public class KeycloakService {
 
-    private final KeycloakAuthorization authorization;
+    private final KeycloakAuthorizationClient authorization;
 
     @Value("${keycloak.username}")
     private String username;

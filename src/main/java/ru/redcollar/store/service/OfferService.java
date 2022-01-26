@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.domain.entity.*;
-import ru.redcollar.store.domain.model.Mail;
+import ru.redcollar.store.domain.model.MailDto;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.mapper.OfferMapper;
@@ -53,7 +53,7 @@ public class OfferService {
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
         offerRepository.save(offer);
-        mailService.sendMail(new Mail(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
+        mailService.sendMail(new MailDto(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
     }
 
     public OfferDto getOffer(long id) {

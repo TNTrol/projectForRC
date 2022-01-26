@@ -37,6 +37,6 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(value = MailServiceException.class)
     public ResponseEntity<String> handleMailException(MailServiceException ex) {
-        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 }

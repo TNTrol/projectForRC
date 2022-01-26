@@ -9,7 +9,7 @@ import ru.redcollar.store.domain.model.KeycloakToken;
 import java.util.Map;
 
 @FeignClient(name = "KeycloakClient", url = "${keycloak.address}")
-public interface KeycloakAuthorization {
+public interface KeycloakAuthorizationClient {
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     KeycloakToken getToken(@RequestBody Map<String, ?> data);
