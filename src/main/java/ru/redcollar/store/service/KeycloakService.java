@@ -34,7 +34,7 @@ public class KeycloakService {
             log.info("Mail's client authorization is success");
             return token;
         } catch (Exception e) {
-            log.error("Mail's client don't authorization");
+            log.error("Mail's client don't authorization\n" + e.getMessage());
             throw new MailServiceException("Mail's client don't authorization");
         }
     }

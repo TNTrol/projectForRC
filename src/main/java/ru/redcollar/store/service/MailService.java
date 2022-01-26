@@ -19,7 +19,7 @@ public class MailService {
             senderMail.sendMail(mail);
             log.info("Send check of offer");
         } catch (Exception e) {
-            log.error("Mail don't sent!");
+            log.error("Mail don't sent!\n" + e.getMessage());
             throw new MailServiceException("Mail don't sent!");
         }
     }
