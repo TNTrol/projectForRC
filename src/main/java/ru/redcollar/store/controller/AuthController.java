@@ -23,10 +23,10 @@ public class AuthController {
 
     @PostMapping("/registration")
     @Operation(summary = "New user registration")
-    @ApiResponse(responseCode = "409", description = "User exist!",  content = @Content)
+    @ApiResponse(responseCode = "409", description = "User exist!", content = @Content)
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Token.class)))
     public ResponseEntity<Token> registration(@Valid @RequestBody NewUser user) {
-        Token key =  authService.registerUser(user);
+        Token key = authService.registerUser(user);
         return ResponseEntity.ok(key);
     }
 
@@ -35,7 +35,7 @@ public class AuthController {
     @ApiResponse(responseCode = "404", description = "User don't exist!", content = @Content)
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Token.class)))
     public ResponseEntity<Token> authentication(@Valid @RequestBody AuthUser user) {
-        Token key =  authService.loginUser(user.getLogin(), user.getPassword());
+        Token key = authService.loginUser(user.getLogin(), user.getPassword());
         return ResponseEntity.ok(key);
     }
 

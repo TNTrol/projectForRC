@@ -1,8 +1,8 @@
 package ru.redcollar.store.exceptions;
 
-public class MailServiceException extends RuntimeException{
+public class MailServiceException extends RuntimeException {
 
-    public MailServiceException(String message){
+    public MailServiceException(String message) {
         super(message);
     }
 }
