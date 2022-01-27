@@ -3,6 +3,7 @@ package ru.redcollar.store.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.component.KeycloakAuthorizationClient;
 import ru.redcollar.store.exceptions.MailServiceException;
@@ -23,6 +24,7 @@ public class KeycloakService {
     @Value("${keycloak.password}")
     private String password;
 
+    @Cacheable("token")
     public String getToken() {
         try {
             Map<String, String> map = new HashMap<>();
