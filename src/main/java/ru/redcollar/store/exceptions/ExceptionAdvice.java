@@ -34,4 +34,9 @@ public class ExceptionAdvice {
     public ResponseEntity<String> handleProductExists(BadLoginException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value = MailServiceException.class)
+    public ResponseEntity<String> handleMailException(MailServiceException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
 }

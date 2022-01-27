@@ -1,7 +1,6 @@
 package ru.redcollar.store.config;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-import org.springframework.web.client.RestTemplate;
 import ru.redcollar.store.component.JwtFilter;
 
 @Configuration
@@ -44,13 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
     @Override
-    public void configure(WebSecurity web){
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v3/api-docs/**",
                 "/configuration/ui",
                 "/swagger-resources/**",
@@ -60,4 +53,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-ui",
                 "/webjars/**");
     }
+
 }

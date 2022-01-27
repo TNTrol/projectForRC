@@ -57,14 +57,14 @@ public class UserController {
     @GetMapping("/by-id/{id}")
     @Operation(summary = "Getting user by id")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)))
-    public ResponseEntity<UserDto>  getUser(@Parameter(description = "Id of user") @PathVariable @Min(1) Long id) {
+    public ResponseEntity<UserDto> getUser(@Parameter(description = "Id of user") @PathVariable @Min(1) Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/list")
     @Operation(summary = "Getting all users with pageable")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDto.class))))
-    public ResponseEntity<List<UserDto>> getAllUsers(@Parameter(description = "Number of page", required = true) @RequestParam(name = "page") @Min(0) int page, @Parameter(description = "Size of page", required = true) @RequestParam(name = "size") @Min(1) int size){
+    public ResponseEntity<List<UserDto>> getAllUsers(@Parameter(description = "Number of page", required = true) @RequestParam(name = "page") @Min(0) int page, @Parameter(description = "Size of page", required = true) @RequestParam(name = "size") @Min(1) int size) {
         return ResponseEntity.ok(userService.getAllUsersDto(page, size));
     }
 }

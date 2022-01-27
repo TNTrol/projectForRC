@@ -7,5 +7,11 @@ spring:
     password: dfkjd
 jwt:
   secret: it_is_dont_security
+server:
+  port: 16001
 mail:
-  address: http://localhost:16000/email
+  address: localhost:16000/email
+keycloak:
+  address: localhost:8080/auth/realms/Mail/protocol/openid-connect/token
+  password: password
+  username: user1
