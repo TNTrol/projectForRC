@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**");
     }
 
-    @Bean
+    @Bean("token")
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager() {
             @Override
