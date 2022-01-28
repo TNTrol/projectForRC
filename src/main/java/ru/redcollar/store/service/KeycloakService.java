@@ -3,12 +3,12 @@ package ru.redcollar.store.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import ru.redcollar.store.component.KeycloakAuthorizationClient;
 import ru.redcollar.store.exceptions.MailServiceException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +23,14 @@ public class KeycloakService {
     @Value("${keycloak.password}")
     private String password;
 
+    @Cacheable("token")
     public String getToken() {
         try {
-            Map<String, String> map = new HashMap<>();
-            map.put("username", username);
-            map.put("password", password);
-            map.put("grant_type", "password");
-            map.put("client_id", "mail");
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("username", username);
+            map.add("password", password);
+            map.add("grant_type", "password");
+            map.add("client_id", "mail");
             String token = authorization.getToken(map).getAccessToken();
             log.info("Mail's client authorization is success");
             return token;
