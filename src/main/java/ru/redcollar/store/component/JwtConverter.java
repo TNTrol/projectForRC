@@ -32,7 +32,7 @@ public class JwtConverter {
             user.setLogin(body.getSubject());
             user.setEmail((String) body.get("email"));
             Integer id = (Integer) body.get("id");
-            var roles = (ArrayList<LinkedHashMap>) body.get("role");
+            ArrayList<LinkedHashMap> roles = (ArrayList<LinkedHashMap>) body.get("role");
             user.setId(id.longValue());
 
             user.setRoles(roles.stream().map(s -> new RoleDto(((Integer) s.get("id")).longValue(), (String) s.get("name"))).collect(Collectors.toList()));
