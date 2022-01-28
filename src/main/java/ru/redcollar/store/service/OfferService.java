@@ -70,11 +70,14 @@ public class OfferService {
                 .map(OfferDto::getId)
                 .toList();
         List<PackProduct> products = packProductSrvice.findAllPackProductByOfferIds(ids);
-        int indexProduct = 0;
-        for (OfferDto offer : offerDtos) {
-            for (int index = indexProduct; index < products.size() && Objects.equals(offer.getId(), products.get(index).getOffer().getId()); index++, indexProduct++) {
-                PackProduct packProduct = products.get(index);
-                offer.getProducts().add(productMapper.packProductToPackProductDto(packProduct));
+        Iterator<OfferDto> offerIterator = offerDtos.iterator();
+        if(offerIterator.hasNext()) {
+            OfferDto offerDto = offerIterator.next();
+            for (PackProduct p : products) {
+                if (!Objects.equals(offerDto.getId(), p.getOffer().getId())) {
+                    offerDto = offerIterator.next();
+                }
+                offerDto.getProducts().add(productMapper.packProductToPackProductDto(p));
             }
         }
         return offerDtos;
