@@ -6,8 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.entity.*;
-import ru.redcollar.store.domain.model.MailDto;
+import ru.redcollar.store.domain.entity.Offer;
+import ru.redcollar.store.domain.entity.PackProduct;
+import ru.redcollar.store.domain.entity.Product;
+import ru.redcollar.store.domain.entity.StatusOffer;
+import ru.redcollar.store.domain.entity.User;
 import ru.redcollar.store.domain.model.OfferDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.mapper.OfferMapper;
@@ -15,7 +18,9 @@ import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.OfferRepository;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +30,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final PackProductSrvice packProductSrvice;
+    private final PackProductService packProductService;
     private final MailService mailService;
     private final OfferMapper offerMapper;
     private final ProductMapper productMapper;
@@ -53,34 +58,39 @@ public class OfferService {
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
         offerRepository.save(offer);
-        mailService.sendMail(new MailDto(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
+//        mailService.sendMail(new MailDto(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
     }
 
     public OfferDto getOffer(long id) {
-        return offerMapper.toDto(offerRepository.findById(id).get());
+        return offerMapper.toDtoWithoutProducts(offerRepository.findById(id).get());
     }
 
     public List<OfferDto> getAllOffer(int page, int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = (String) authentication.getCredentials();
         Pageable pageable = PageRequest.of(page, size);
+
         List<Offer> offers = offerRepository.findByUserLogin(login, pageable);
-        List<OfferDto> offerDtos = offerMapper.toDto(offers);
-        List<Long> ids = offerDtos.stream()
-                .map(OfferDto::getId)
-                .toList();
-        List<PackProduct> products = packProductSrvice.findAllPackProductByOfferIds(ids);
-        Iterator<OfferDto> offerIterator = offerDtos.iterator();
-        if(offerIterator.hasNext()) {
-            OfferDto offerDto = offerIterator.next();
-            for (PackProduct p : products) {
-                if (!Objects.equals(offerDto.getId(), p.getOffer().getId())) {
-                    offerDto = offerIterator.next();
-                }
-                offerDto.getProducts().add(productMapper.packProductToPackProductDto(p));
-            }
-        }
-        return offerDtos;
+        List<Long> offerIds = offers.stream().map(Offer::getId).toList();
+
+        List<PackProduct> products = packProductService.findAllPackProductByOfferIds(offerIds);
+        Map<Long, List<PackProduct>> offerIdToPackProductMap = products.stream()
+                .collect(Collectors.groupingBy(x -> x.getOffer().getId()));
+
+        offers.forEach(offer -> offer.setProducts(offerIdToPackProductMap.get(offer.getId())));
+
+//        Iterator<OfferDto> offerIterator = offerDtos.iterator();
+//        if(offerIterator.hasNext()) {
+//            OfferDto offerDto = offerIterator.next();
+//            for (PackProduct p : products) {
+//                if (!Objects.equals(offerDto.getId(), p.getOffer().getId())) {
+//                    offerDto = offerIterator.next();
+//                }
+//                offerDto.getProducts().add(productMapper.packProductToPackProductDto(p));
+//            }
+//        }
+
+        return offers.stream().map(offerMapper::toDto).collect(Collectors.toList());
     }
 
     public void sendOffer(Long offerId) {

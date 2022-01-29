@@ -8,13 +8,14 @@ import ru.redcollar.store.domain.model.OfferDto;
 
 import java.util.List;
 
-@Mapper(unmappedSourcePolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface OfferMapper {
 
     @Mapping(target = "products", ignore = true)
-    OfferDto toDto(Offer offer);
+    OfferDto toDtoWithoutProducts(Offer offer);
 
     Offer fromDto(OfferDto offerDto);
 
-    List<OfferDto> toDto(List<Offer> offer);
+    OfferDto toDto(Offer offer);
+
 }

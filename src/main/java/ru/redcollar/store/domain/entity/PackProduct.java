@@ -23,7 +23,8 @@ public class PackProduct implements Serializable {
     @OneToOne
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "offer_id")
     private Offer offer;
 
     @Column(name = "count")
