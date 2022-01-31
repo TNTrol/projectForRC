@@ -1,9 +1,9 @@
-package ru.redcollar.store.domain.model;
+package ru.redcollar.store.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.redcollar.store.domain.entity.TypeProduct;
+import ru.redcollar.store.entity.TypeProduct;
 import ru.redcollar.store.validator.OnCreateOffer;
 import ru.redcollar.store.validator.OnCreateProduct;
 import ru.redcollar.store.validator.OnUpdateProduct;

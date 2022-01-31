@@ -1,16 +1,15 @@
 package ru.redcollar.store.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
-import ru.redcollar.store.domain.entity.User;
-import ru.redcollar.store.domain.model.JwtTokenUser;
-import ru.redcollar.store.domain.model.UserDto;
-import ru.redcollar.store.domain.model.UserUpdateDto;
+import ru.redcollar.store.entity.User;
+import ru.redcollar.store.dto.JwtTokenUserDto;
+import ru.redcollar.store.dto.UserDto;
+import ru.redcollar.store.dto.UserUpdateDto;
 
-@Mapper(unmappedSourcePolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    JwtTokenUser userToJwtTokenUser(User user);
+    JwtTokenUserDto userToJwtTokenUser(User user);
 
     User userUpdateDtoToUser(UserUpdateDto user);
 

@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.redcollar.store.domain.model.UserDto;
-import ru.redcollar.store.domain.model.UserUpdateDto;
+import ru.redcollar.store.dto.UserDto;
+import ru.redcollar.store.dto.UserUpdateDto;
 import ru.redcollar.store.service.UserService;
 
 import javax.validation.Valid;

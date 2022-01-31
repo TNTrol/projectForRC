@@ -1,4 +1,4 @@
-package ru.redcollar.store.domain.entity;
+package ru.redcollar.store.entity;
 
 public enum TypeProduct {
     SENSOR,

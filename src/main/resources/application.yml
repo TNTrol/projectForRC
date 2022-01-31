@@ -5,9 +5,9 @@ spring:
       hibernate:
         format_sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 1234
+    url: jdbc:postgresql://localhost:5432/shop_rc
+    username: tntrol
+    password: dfkjd
 jwt:
   secret: it_is_dont_security
 server:

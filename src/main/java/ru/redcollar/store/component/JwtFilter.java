@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.redcollar.store.domain.model.JwtTokenUser;
+import ru.redcollar.store.dto.JwtTokenUserDto;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = request.getHeader("AUTH-TOKEN");
 
         if (token != null) {
-            JwtTokenUser userJwt = jwtService.parseJwt(token);
+            JwtTokenUserDto userJwt = jwtService.parseJwt(token);
 
             List<String> roles = userJwt.getRoles()
                     .stream()

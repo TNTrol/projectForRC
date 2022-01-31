@@ -1,4 +1,4 @@
-package ru.redcollar.store.domain.model;
+package ru.redcollar.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class KeycloakToken {
+public class KeycloakTokenDto {
 
     @JsonProperty("access_token")
     private String accessToken;

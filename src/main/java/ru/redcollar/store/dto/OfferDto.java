@@ -1,11 +1,11 @@
-package ru.redcollar.store.domain.model;
+package ru.redcollar.store.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.redcollar.store.domain.entity.StatusOffer;
+import ru.redcollar.store.entity.StatusOffer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;

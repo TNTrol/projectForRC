@@ -6,12 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.entity.Offer;
-import ru.redcollar.store.domain.entity.PackProduct;
-import ru.redcollar.store.domain.entity.Product;
-import ru.redcollar.store.domain.entity.StatusOffer;
-import ru.redcollar.store.domain.entity.User;
-import ru.redcollar.store.domain.model.OfferDto;
+import ru.redcollar.store.entity.Offer;
+import ru.redcollar.store.entity.PackProduct;
+import ru.redcollar.store.entity.Product;
+import ru.redcollar.store.entity.StatusOffer;
+import ru.redcollar.store.entity.User;
+import ru.redcollar.store.dto.OfferDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.mapper.OfferMapper;
 import ru.redcollar.store.mapper.ProductMapper;
@@ -76,20 +76,7 @@ public class OfferService {
         List<PackProduct> products = packProductService.findAllPackProductByOfferIds(offerIds);
         Map<Long, List<PackProduct>> offerIdToPackProductMap = products.stream()
                 .collect(Collectors.groupingBy(x -> x.getOffer().getId()));
-
         offers.forEach(offer -> offer.setProducts(offerIdToPackProductMap.get(offer.getId())));
-
-//        Iterator<OfferDto> offerIterator = offerDtos.iterator();
-//        if(offerIterator.hasNext()) {
-//            OfferDto offerDto = offerIterator.next();
-//            for (PackProduct p : products) {
-//                if (!Objects.equals(offerDto.getId(), p.getOffer().getId())) {
-//                    offerDto = offerIterator.next();
-//                }
-//                offerDto.getProducts().add(productMapper.packProductToPackProductDto(p));
-//            }
-//        }
-
         return offers.stream().map(offerMapper::toDto).collect(Collectors.toList());
     }
 

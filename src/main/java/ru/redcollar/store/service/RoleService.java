@@ -2,7 +2,7 @@ package ru.redcollar.store.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.entity.Role;
+import ru.redcollar.store.entity.Role;
 import ru.redcollar.store.repository.RoleRepository;
 
 import java.util.List;

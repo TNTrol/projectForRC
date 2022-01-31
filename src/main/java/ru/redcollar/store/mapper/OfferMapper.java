@@ -2,11 +2,8 @@ package ru.redcollar.store.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
-import ru.redcollar.store.domain.entity.Offer;
-import ru.redcollar.store.domain.model.OfferDto;
-
-import java.util.List;
+import ru.redcollar.store.entity.Offer;
+import ru.redcollar.store.dto.OfferDto;
 
 @Mapper(componentModel = "spring")
 public interface OfferMapper {

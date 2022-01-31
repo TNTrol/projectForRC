@@ -3,7 +3,7 @@ package ru.redcollar.store.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.redcollar.store.domain.entity.PackProduct;
+import ru.redcollar.store.entity.PackProduct;
 
 import java.util.List;
 

@@ -7,11 +7,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.redcollar.store.domain.model.JwtTokenUser;
-import ru.redcollar.store.domain.model.RoleDto;
+import ru.redcollar.store.dto.JwtTokenUserDto;
+import ru.redcollar.store.dto.RoleDto;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
@@ -21,14 +20,14 @@ public class JwtConverter {
     @Value("${jwt.secret}")
     private String secret;
 
-    public JwtTokenUser parseJwt(String token) {
+    public JwtTokenUserDto parseJwt(String token) {
         try {
             Claims body = Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
 
-            JwtTokenUser user = new JwtTokenUser();
+            JwtTokenUserDto user = new JwtTokenUserDto();
             user.setLogin(body.getSubject());
             user.setEmail((String) body.get("email"));
             Integer id = (Integer) body.get("id");
@@ -42,7 +41,7 @@ public class JwtConverter {
         }
     }
 
-    public String parseAuthJwtUser(JwtTokenUser user) {
+    public String parseAuthJwtUser(JwtTokenUserDto user) {
         String jws = Jwts.builder()
                 .setSubject(user.getLogin())
                 .claim("id", user.getId())

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.component.MailClient;
-import ru.redcollar.store.domain.model.MailDto;
+import ru.redcollar.store.dto.MailDto;
 import ru.redcollar.store.exceptions.MailServiceException;
 
 @Service
