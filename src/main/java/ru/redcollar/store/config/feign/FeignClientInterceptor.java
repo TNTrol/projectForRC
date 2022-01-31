@@ -1,4 +1,4 @@
-package ru.redcollar.store.component;
+package ru.redcollar.store.config.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

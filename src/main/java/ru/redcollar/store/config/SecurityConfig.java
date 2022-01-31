@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
-import ru.redcollar.store.component.JwtFilter;
+import ru.redcollar.store.filter.JwtFilter;
 
 @Configuration
 @EnableWebSecurity

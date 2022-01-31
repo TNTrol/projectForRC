@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.component.JwtConverter;
 import ru.redcollar.store.entity.User;
 import ru.redcollar.store.dto.JwtTokenUserDto;
 import ru.redcollar.store.dto.NewUserDto;
@@ -22,7 +21,7 @@ public class AuthService {
 
     private final RoleService roleService;
     private final UserService userService;
-    private final JwtConverter jwtConverter;
+    private final JwtConverterService jwtConverter;
     private final PasswordEncoder encoder;
     private final UserMapper userMapper;
 

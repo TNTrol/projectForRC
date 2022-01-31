@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import ru.redcollar.store.component.KeycloakAuthorizationClient;
+import ru.redcollar.store.service.client.KeycloakAuthorizationClient;
 import ru.redcollar.store.exceptions.MailServiceException;
 
 @Service

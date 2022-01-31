@@ -1,4 +1,4 @@
-package ru.redcollar.store.component;
+package ru.redcollar.store.service.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

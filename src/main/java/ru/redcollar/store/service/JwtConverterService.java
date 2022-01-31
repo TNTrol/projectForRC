@@ -1,4 +1,4 @@
-package ru.redcollar.store.component;
+package ru.redcollar.store.service;
 
 import io.jsonwebtoken.Claims;
 
@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.redcollar.store.dto.JwtTokenUserDto;
 import ru.redcollar.store.dto.RoleDto;
 
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
-@Component
-public class JwtConverter {
+@Service
+public class JwtConverterService {
 
     @Value("${jwt.secret}")
     private String secret;

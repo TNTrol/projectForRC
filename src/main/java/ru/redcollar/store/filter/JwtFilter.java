@@ -1,4 +1,4 @@
-package ru.redcollar.store.component;
+package ru.redcollar.store.filter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.redcollar.store.service.JwtConverterService;
 import ru.redcollar.store.dto.JwtTokenUserDto;
 
 import javax.servlet.FilterChain;
@@ -21,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtConverter jwtService;
+    private final JwtConverterService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

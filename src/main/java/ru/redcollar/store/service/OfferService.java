@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.redcollar.store.dto.MailDto;
 import ru.redcollar.store.entity.Offer;
 import ru.redcollar.store.entity.PackProduct;
 import ru.redcollar.store.entity.Product;
@@ -58,7 +59,7 @@ public class OfferService {
         offer.setDate(offerDto.getDate());
         offer.setStatus(offerDto.getStatus());
         offerRepository.save(offer);
-//        mailService.sendMail(new MailDto(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
+        mailService.sendMail(new MailDto(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
     }
 
     public OfferDto getOffer(long id) {
