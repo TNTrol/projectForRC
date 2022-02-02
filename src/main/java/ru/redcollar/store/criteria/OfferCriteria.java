@@ -1,5 +1,6 @@
 package ru.redcollar.store.criteria;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import ru.redcollar.store.dto.OfferPageableCriteriaDto;
 import ru.redcollar.store.entity.Offer;
@@ -21,7 +22,7 @@ public class OfferCriteria {
             List<Predicate> predicates = new ArrayList<>();
             Join<Offer, User> userJoin = root.join("user");
             predicates.add(criteriaBuilder.equal(userJoin.get("login"), offerCriteriaDto.getLogin()));
-            if (offerCriteriaDto.getProductName() != null) {
+            if (StringUtils.isNotBlank(offerCriteriaDto.getProductName())) {
                 ListJoin<Offer, PackProduct> packProductJoin = root.joinList("products");
                 Join<PackProduct, Product> productJoin = packProductJoin.join("product");
                 predicates.add(criteriaBuilder.like(productJoin.get("name"), "%" + offerCriteriaDto.getProductName() + "%"));
