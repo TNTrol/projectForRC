@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageDto {
+public class  ProductPageableCriteriaDto extends PageDto{
 
     private String name;
     private TypeProduct type;
