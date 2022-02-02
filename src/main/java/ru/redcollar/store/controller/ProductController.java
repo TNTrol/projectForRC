@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.redcollar.store.dto.ProductCriteriaDto;
 import ru.redcollar.store.dto.ProductDto;
 import ru.redcollar.store.service.ProductService;
 import ru.redcollar.store.validator.OnCreateProduct;
@@ -34,6 +35,13 @@ public class ProductController {
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class))))
     public ResponseEntity<List> getAllProduct(@Parameter(description = "Number of page", required = true) @RequestParam(name = "page") @Min(0) int page, @Parameter(description = "Size of page", required = true) @RequestParam(name = "size") @Min(1) int size) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAll(page, size));
+    }
+
+    @GetMapping("/criteria")
+    @Operation(summary = "Get all production by criteria")
+    @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class))))
+    public ResponseEntity<List<ProductDto>> getAllProductByCriteria(@Parameter(description = "Product criteria", required = true) @RequestBody ProductCriteriaDto productCriteriaDto, @Parameter(description = "Number of page", required = true) @RequestParam(name = "page") @Min(0) int page, @Parameter(description = "Size of page", required = true) @RequestParam(name = "size") @Min(1) int size){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProductByCriteria(productCriteriaDto, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
