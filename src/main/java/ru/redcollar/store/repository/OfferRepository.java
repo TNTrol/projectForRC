@@ -2,6 +2,7 @@ package ru.redcollar.store.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.redcollar.store.entity.Offer;
@@ -9,7 +10,7 @@ import ru.redcollar.store.entity.Offer;
 import java.util.List;
 
 
-public interface OfferRepository extends JpaRepository<Offer, Long> {
+public interface OfferRepository extends JpaRepository<Offer, Long>, JpaSpecificationExecutor<Offer> {
 
     List<Offer> findByUserId(Long user_id, Pageable pageable);
 

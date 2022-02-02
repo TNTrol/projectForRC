@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.redcollar.store.dto.ProductPageableCriteriaDto;
 import ru.redcollar.store.dto.ProductDto;
 import ru.redcollar.store.service.ProductService;
 import ru.redcollar.store.validator.OnCreateProduct;
@@ -29,11 +30,11 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping("/list")
-    @Operation(summary = "Get all production with pageable")
+    @PostMapping("/list")
+    @Operation(summary = "Get all production by criteria with pageable")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class))))
-    public ResponseEntity<List> getAllProduct(@Parameter(description = "Number of page", required = true) @RequestParam(name = "page") @Min(0) int page, @Parameter(description = "Size of page", required = true) @RequestParam(name = "size") @Min(1) int size) {
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getAll(page, size));
+    public ResponseEntity<List<ProductDto>> getAllProductByCriteria(@Parameter(description = "Product criteria with pageable data", required = true) @Valid @RequestBody ProductPageableCriteriaDto productCriteriaDto){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProductByCriteria(productCriteriaDto));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.redcollar.store.dto.OfferDto;
+import ru.redcollar.store.dto.OfferPageableCriteriaDto;
 import ru.redcollar.store.service.OfferService;
 import ru.redcollar.store.validator.OnCreateOffer;
 
@@ -27,11 +28,11 @@ public class OfferController {
 
     private final OfferService offerService;
 
-    @GetMapping("/history")
+    @PostMapping("/history")
     @Operation(summary = "Getting a order history")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OfferDto.class))))
-    public ResponseEntity<List> getAllOffer(@Parameter(description = "Number of page", required = true) @RequestParam(name = "page") @Min(0) int page, @Parameter(description = "Size of page", required = true) @RequestParam(name = "size") @Min(1) int size) {
-        return ResponseEntity.ok(offerService.getAllOffer(page, size));
+    public ResponseEntity<List> getAllOffer(@Parameter(description = "Offer criteria with pageable data", required = true) @Valid @RequestBody OfferPageableCriteriaDto criteriaDto) {
+        return ResponseEntity.ok(offerService.getAllOffer(criteriaDto));
     }
 
     @PostMapping
