@@ -3,10 +3,13 @@ package ru.redcollar.store.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.redcollar.store.criteria.OfferCriteria;
 import ru.redcollar.store.dto.MailDto;
+import ru.redcollar.store.dto.OfferPageableCriteriaDto;
 import ru.redcollar.store.entity.Offer;
 import ru.redcollar.store.entity.PackProduct;
 import ru.redcollar.store.entity.Product;
@@ -66,12 +69,13 @@ public class OfferService {
         return offerMapper.toDtoWithoutProducts(offerRepository.findById(id).get());
     }
 
-    public List<OfferDto> getAllOffer(int page, int size) {
+    public List<OfferDto> getAllOffer(OfferPageableCriteriaDto offerPageableCriteriaDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String login = (String) authentication.getCredentials();
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(offerPageableCriteriaDto.getPage(), offerPageableCriteriaDto.getSize());
+        offerPageableCriteriaDto.setLogin((String) authentication.getCredentials());
+        Specification<Offer> specification = OfferCriteria.getOfferSpecification(offerPageableCriteriaDto);
 
-        List<Offer> offers = offerRepository.findByUserLogin(login, pageable);
+        List<Offer> offers = offerRepository.findAll(specification, pageable).stream().toList();
         List<Long> offerIds = offers.stream().map(Offer::getId).toList();
 
         List<PackProduct> products = packProductService.findAllPackProductByOfferIds(offerIds);
