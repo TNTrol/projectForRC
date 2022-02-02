@@ -3,20 +3,17 @@ package ru.redcollar.store.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.redcollar.store.entity.TypeProduct;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductPageableCriteriaDto extends ProductCriteriaDto{
+public class PageDto {
 
-    @NotNull
-    @Min(1)
-    private int size;
-
-    @NotNull
-    @Min(0)
-    private int page;
+    private String name;
+    private TypeProduct type;
+    private BigDecimal lowerCost;
+    private BigDecimal upperCost;
 }
