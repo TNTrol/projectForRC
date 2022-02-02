@@ -6,16 +6,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.domain.entity.*;
-import ru.redcollar.store.domain.model.MailDto;
-import ru.redcollar.store.domain.model.OfferDto;
+import ru.redcollar.store.dto.MailDto;
+import ru.redcollar.store.entity.Offer;
+import ru.redcollar.store.entity.PackProduct;
+import ru.redcollar.store.entity.Product;
+import ru.redcollar.store.entity.StatusOffer;
+import ru.redcollar.store.entity.User;
+import ru.redcollar.store.dto.OfferDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.mapper.OfferMapper;
 import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.OfferRepository;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +31,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final PackProductSrvice packProductSrvice;
+    private final PackProductService packProductService;
     private final MailService mailService;
     private final OfferMapper offerMapper;
     private final ProductMapper productMapper;
@@ -57,27 +63,22 @@ public class OfferService {
     }
 
     public OfferDto getOffer(long id) {
-        return offerMapper.toDto(offerRepository.findById(id).get());
+        return offerMapper.toDtoWithoutProducts(offerRepository.findById(id).get());
     }
 
     public List<OfferDto> getAllOffer(int page, int size) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String login = (String) authentication.getCredentials();
         Pageable pageable = PageRequest.of(page, size);
+
         List<Offer> offers = offerRepository.findByUserLogin(login, pageable);
-        List<OfferDto> offerDtos = offerMapper.toDto(offers);
-        List<Long> ids = offerDtos.stream()
-                .map(OfferDto::getId)
-                .toList();
-        List<PackProduct> products = packProductSrvice.findAllPackProductByOfferIds(ids);
-        int indexProduct = 0;
-        for (OfferDto offer : offerDtos) {
-            for (int index = indexProduct; index < products.size() && Objects.equals(offer.getId(), products.get(index).getOffer().getId()); index++, indexProduct++) {
-                PackProduct packProduct = products.get(index);
-                offer.getProducts().add(productMapper.packProductToPackProductDto(packProduct));
-            }
-        }
-        return offerDtos;
+        List<Long> offerIds = offers.stream().map(Offer::getId).toList();
+
+        List<PackProduct> products = packProductService.findAllPackProductByOfferIds(offerIds);
+        Map<Long, List<PackProduct>> offerIdToPackProductMap = products.stream()
+                .collect(Collectors.groupingBy(x -> x.getOffer().getId()));
+        offers.forEach(offer -> offer.setProducts(offerIdToPackProductMap.get(offer.getId())));
+        return offers.stream().map(offerMapper::toDto).collect(Collectors.toList());
     }
 
     public void sendOffer(Long offerId) {

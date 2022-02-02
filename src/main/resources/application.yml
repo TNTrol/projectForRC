@@ -1,6 +1,9 @@
 spring:
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/shop_rc
     username: tntrol
@@ -15,3 +18,14 @@ keycloak:
   address: localhost:8080/auth/realms/Mail/protocol/openid-connect/token
   password: password
   username: user1
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+
+

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.redcollar.store.domain.model.ProductDto;
+import ru.redcollar.store.dto.ProductDto;
 import ru.redcollar.store.service.ProductService;
 import ru.redcollar.store.validator.OnCreateProduct;
 import ru.redcollar.store.validator.OnUpdateProduct;

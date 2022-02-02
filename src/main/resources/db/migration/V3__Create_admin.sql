@@ -1,0 +1,2 @@
+INSERT INTO users(login, email, password) VALUES('admin', '!admin@mail.com', '$2a$10$pjks52MIIKhny3jqm88fHOzc5NkrhF2SvbR.s2Z/p96Kp/QuPCAuC');
+INSERT INTO user_to_role(role_id, user_id) VALUES(1, 1), (2, 1);

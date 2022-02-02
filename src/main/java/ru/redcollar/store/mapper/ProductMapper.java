@@ -1,15 +1,14 @@
 package ru.redcollar.store.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
-import ru.redcollar.store.domain.entity.PackProduct;
-import ru.redcollar.store.domain.entity.Product;
-import ru.redcollar.store.domain.model.PackProductDto;
-import ru.redcollar.store.domain.model.ProductDto;
+import ru.redcollar.store.entity.PackProduct;
+import ru.redcollar.store.entity.Product;
+import ru.redcollar.store.dto.PackProductDto;
+import ru.redcollar.store.dto.ProductDto;
 
 import java.util.List;
 
-@Mapper(unmappedSourcePolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     ProductDto productToProductDto(Product product);

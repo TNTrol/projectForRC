@@ -6,11 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.redcollar.store.component.JwtConverter;
-import ru.redcollar.store.domain.entity.User;
-import ru.redcollar.store.domain.model.JwtTokenUser;
-import ru.redcollar.store.domain.model.NewUser;
-import ru.redcollar.store.domain.model.Token;
+import ru.redcollar.store.entity.User;
+import ru.redcollar.store.dto.JwtTokenUserDto;
+import ru.redcollar.store.dto.NewUserDto;
+import ru.redcollar.store.dto.TokenDto;
 import ru.redcollar.store.exceptions.BadLoginException;
 import ru.redcollar.store.exceptions.UserExistsException;
 import ru.redcollar.store.mapper.UserMapper;
@@ -22,11 +21,11 @@ public class AuthService {
 
     private final RoleService roleService;
     private final UserService userService;
-    private final JwtConverter jwtConverter;
+    private final JwtConverterService jwtConverter;
     private final PasswordEncoder encoder;
     private final UserMapper userMapper;
 
-    public Token registerUser(NewUser newUser) {
+    public TokenDto registerUser(NewUserDto newUser) {
         String temp = newUser.getLogin();
         if (!userService.existUserByLogin(newUser.getLogin())) {
             temp = newUser.getEmail();
@@ -38,25 +37,25 @@ public class AuthService {
                 user.setPassword(encoder.encode(newUser.getPassword()));
                 user.setRoles(roleService.getDefaultRoles());
                 userService.saveUser(user);
-                JwtTokenUser userDto = userMapper.userToJwtTokenUser(user);
-                return new Token(jwtConverter.parseAuthJwtUser(userDto));
+                JwtTokenUserDto userDto = userMapper.userToJwtTokenUser(user);
+                return new TokenDto(jwtConverter.parseAuthJwtUser(userDto));
             }
         }
         log.error("User {} exist", temp);
         throw new UserExistsException("User " + temp + " exist");
     }
 
-    public Token loginUser(String login, String password) {
+    public TokenDto loginUser(String login, String password) {
         User user = userService.getUserByLogin(login);
         if (user == null || !encoder.matches(password, user.getPassword())) {
             log.error("Incorrect login({}) or password", login);
             throw new BadLoginException("Incorrect login or password");
         }
-        JwtTokenUser userDto = userMapper.userToJwtTokenUser(user);
-        return new Token(jwtConverter.parseAuthJwtUser(userDto));
+        JwtTokenUserDto userDto = userMapper.userToJwtTokenUser(user);
+        return new TokenDto(jwtConverter.parseAuthJwtUser(userDto));
     }
 
-    public JwtTokenUser getUser() {
+    public JwtTokenUserDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
         return userMapper.userToJwtTokenUser(user);
