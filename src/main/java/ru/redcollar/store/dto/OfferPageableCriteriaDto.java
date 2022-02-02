@@ -20,10 +20,10 @@ public class OfferPageableCriteriaDto extends PageDto {
     private String login;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
-    private Instant with;
+    private Instant withDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
-    private Instant to;
+    private Instant toDate;
     private BigDecimal lowerCost;
     private BigDecimal upperCost;
 }

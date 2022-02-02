@@ -11,7 +11,6 @@ import ru.redcollar.store.entity.User;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Predicate;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +32,11 @@ public class OfferCriteria {
             if (offerCriteriaDto.getUpperCost() != null) {
                 predicates.add(criteriaBuilder.lt(root.get("cost"), offerCriteriaDto.getUpperCost()));
             }
-            if (offerCriteriaDto.getWith() != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), offerCriteriaDto.getWith()));
+            if (offerCriteriaDto.getWithDate() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), offerCriteriaDto.getWithDate()));
             }
-            if (offerCriteriaDto.getTo() != null) {
-                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), offerCriteriaDto.getTo()));
+            if (offerCriteriaDto.getToDate() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), offerCriteriaDto.getToDate()));
             }
             return query.where(predicates.toArray(new Predicate[0])).getRestriction();
         };
