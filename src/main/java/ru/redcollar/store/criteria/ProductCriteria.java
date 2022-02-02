@@ -18,7 +18,7 @@ public class ProductCriteria {
                 predicates.add(criteriaBuilder.like(root.get("name"), "%" + productCriteriaDto.getName() + "%"));
             }
             if (productCriteriaDto.getType() != null){
-                predicates.add(criteriaBuilder.equal(root.get("type"), productCriteriaDto.getType()));
+                predicates.add(criteriaBuilder.equal(root.get("type"), productCriteriaDto.getType().toString()));
             }
             if(productCriteriaDto.getLowerCost() != null){
                 predicates.add(criteriaBuilder.gt(root.get("cost"), productCriteriaDto.getLowerCost()));

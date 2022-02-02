@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.redcollar.store.criteria.ProductCriteria;
-import ru.redcollar.store.dto.ProductCriteriaDto;
+import ru.redcollar.store.dto.ProductPageableCriteriaDto;
 import ru.redcollar.store.entity.Product;
 import ru.redcollar.store.dto.ProductDto;
 import ru.redcollar.store.exceptions.ProductDontExistException;
@@ -69,12 +69,12 @@ public class ProductService {
         return productRepository.findByIds(ids);
     }
 
-    public List<ProductDto> getAllProductByCriteria(ProductCriteriaDto productCriteriaDto, int page, int size){
-        if (page < 0 || size < 0) {
+    public List<ProductDto> getAllProductByCriteria(ProductPageableCriteriaDto paramDto){
+        if (paramDto.getPage() < 0 || paramDto.getSize() < 0) {
             return Collections.emptyList();
         }
-        Specification<Product> productSpecification = ProductCriteria.getProductSpecification(productCriteriaDto);
-        Pageable pageable = PageRequest.of(page, size);
+        Specification<Product> productSpecification = ProductCriteria.getProductSpecification(paramDto);
+        Pageable pageable = PageRequest.of(paramDto.getPage(), paramDto.getSize() );
         return productRepository.findAll(productSpecification, pageable).stream().map(productMapper::productToProductDto).toList();
     }
 }
