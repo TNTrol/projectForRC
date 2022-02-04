@@ -8,6 +8,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/shop_rc
     username: tntrol
     password: dfkjd
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: localhost:9092
 jwt:
   secret: it_is_dont_security
 server:
