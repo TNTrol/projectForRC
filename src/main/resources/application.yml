@@ -8,6 +8,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/shop_rc
     username: tntrol
     password: dfkjd
+message:
+  topic:
+    name: queue1
+store:
+  address: "bolshoe sadovoe 302bis 50"
 jwt:
   secret: it_is_dont_security
 server:
