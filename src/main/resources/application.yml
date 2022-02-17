@@ -8,17 +8,21 @@ spring:
     url: jdbc:postgresql://localhost:5432/shop_rc
     username: tntrol
     password: dfkjd
+  application:
+    name: store
 message:
   topic:
     name: queue1
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 store:
   address: "bolshoe sadovoe 302bis 50"
 jwt:
   secret: it_is_dont_security
 server:
   port: 16001
-mail:
-  address: localhost:16000/email
 keycloak:
   address: localhost:8080/auth/realms/Mail/protocol/openid-connect/token
   password: password
