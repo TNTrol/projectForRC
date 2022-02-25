@@ -66,7 +66,7 @@ public class OfferTest {
 
     @Test
     public void saveOffer() {
-        User user = new User();//1L, "test_name", "password", "test_login", "test_email", "test_address", null
+        User user = new User();
         Offer offer = new Offer(null, user, new BigDecimal(100), Instant.now(), StatusOffer.PAID, new ArrayList<>());
         List<PackProduct> packProducts = Arrays.asList(
                 new PackProduct(1L, new Product(1L, "test1", "test1_d", TypeProduct.CONTROLLER, new BigDecimal(100)), offer, 2),
