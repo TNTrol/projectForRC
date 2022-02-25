@@ -19,12 +19,12 @@ import java.math.BigDecimal;
 public class ProductTest {
 
     @Mock
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Mock
-    ProductMapper productMapper;
+    private ProductMapper productMapper;
 
-    ProductService productService;
+    private ProductService productService;
 
 
     @Before
