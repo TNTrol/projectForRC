@@ -1,0 +1,17 @@
+eureka:
+  client:
+    enabled: false
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:11.1:///integration-tests-db
+store:
+  address: "bolshoe sadovoe 302bis 50"
+jwt:
+  secret: it_is_dont_security
+keycloak:
+  address: localhost:8080/auth/realms/Mail/protocol/openid-connect/token
+  password: password
+  username: user1
+message:
+  topic:
+    name: queue1
