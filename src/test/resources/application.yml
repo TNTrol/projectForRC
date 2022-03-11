@@ -7,6 +7,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+  jackson:
+    default-property-inclusion: non_null
 store:
   address: "bolshoe sadovoe 302bis 50"
 jwt:
