@@ -13,7 +13,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -44,6 +43,8 @@ public class OfferControllerTest {
     @MockBean
     private final DeliveryService deliveryService;
 
+    private final ObjectMapper objectMapper;
+
     @Test
     @WithMockUser(roles = "ADMIN", password = "admin")
     @Transactional
@@ -52,7 +53,6 @@ public class OfferControllerTest {
         Instant date = Instant.now();
         offerDto.setDate(date);
         offerDto.setStatus(StatusOffer.PAID);
-        ObjectMapper objectMapper = new ObjectMapper();
         for (long i = 1; i < 4; i++) {
             ProductDto productDto = new ProductDto();
             productDto.setId(i);
@@ -61,6 +61,7 @@ public class OfferControllerTest {
             packProductDto.setCount(1);
             offerDto.getProducts().add(packProductDto);
         }
+
         mockMvc.perform(post("/offer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(offerDto)))
@@ -76,7 +77,6 @@ public class OfferControllerTest {
         Instant date = Instant.now();
         offerDto.setDate(date);
         offerDto.setStatus(StatusOffer.PAID);
-        ObjectMapper objectMapper = new ObjectMapper();
         for (long i = 1; i < 4; i++) {
             ProductDto productDto = new ProductDto();
             productDto.setId(i);
@@ -85,6 +85,7 @@ public class OfferControllerTest {
             packProductDto.setCount((int) (i * 2));
             offerDto.getProducts().add(packProductDto);
         }
+
         mockMvc.perform(post("/offer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(offerDto)))
@@ -100,7 +101,7 @@ public class OfferControllerTest {
         Instant date = Instant.now();
         offerDto.setDate(date);
         offerDto.setStatus(StatusOffer.PAID);
-        ObjectMapper objectMapper = new ObjectMapper();
+
         mockMvc.perform(post("/offer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(offerDto)))

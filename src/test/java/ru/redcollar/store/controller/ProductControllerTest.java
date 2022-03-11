@@ -32,6 +32,8 @@ public class ProductControllerTest {
 
     private final MockMvc mockMvc;
 
+    private final ObjectMapper objectMapper;
+
     @Test
     @WithMockUser(roles = "ADMIN")
     @Transactional
@@ -41,9 +43,10 @@ public class ProductControllerTest {
         productDto.setDescription("test");
         productDto.setType(TypeProduct.CONTROLLER);
         productDto.setName("test_name");
+
         mockMvc.perform(post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(productDto)))
+                        .content(objectMapper.writeValueAsString(productDto)))
                 .andExpect(status().isOk());
     }
 
@@ -57,9 +60,10 @@ public class ProductControllerTest {
         productDto.setType(TypeProduct.CONTROLLER);
         productDto.setName("test_name");
         productDto.setId(1L);
+
         mockMvc.perform(put("/product")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(productDto)))
+                        .content(objectMapper.writeValueAsString(productDto)))
                 .andExpect(status().isNotFound());
     }
 }
