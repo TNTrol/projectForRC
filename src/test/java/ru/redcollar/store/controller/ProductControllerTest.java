@@ -1,4 +1,4 @@
-package ru.redcollar.store;
+package ru.redcollar.store.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,6 @@ public class ProductControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    @Sql("/db.sql")
     @Transactional
     public void successfullyCreationProduct() throws Exception {
         ProductDto productDto = new ProductDto();
@@ -52,7 +51,6 @@ public class ProductControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    @Sql("/db.sql")
     @Transactional
     public void unsuccessfullyUpdateProduct() throws Exception {
         ProductDto productDto = new ProductDto();

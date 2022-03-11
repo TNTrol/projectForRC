@@ -1,4 +1,4 @@
-package ru.redcollar.store;
+package ru.redcollar.store.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductTest {
+public class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;

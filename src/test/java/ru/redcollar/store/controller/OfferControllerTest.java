@@ -1,4 +1,4 @@
-package ru.redcollar.store;
+package ru.redcollar.store.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class OfferControllerTest {
         Instant date = Instant.now();
         offerDto.setDate(date);
         offerDto.setStatus(StatusOffer.PAID);
-        for(long i = 1; i < 4; ++i){
+        for(long i = 1; i < 4; i++){
             ProductDto productDto = new ProductDto();
             productDto.setId(i);
             PackProductDto packProductDto = new PackProductDto();

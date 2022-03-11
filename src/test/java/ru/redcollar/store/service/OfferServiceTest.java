@@ -1,4 +1,4 @@
-package ru.redcollar.store;
+package ru.redcollar.store.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,10 +21,11 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OfferTest {
+public class OfferServiceTest {
 
     @Mock
     private OfferRepository offerRepository;
@@ -86,11 +87,11 @@ public class OfferTest {
         OfferDto offerDtoTarget = offerService.saveOffer(offerMapper.toDto(offer));
         OfferDto offerDtoSrc = offerMapper.toDto(offer);
 
-        assert (offerDtoTarget.getId().equals(10L));
-        assert (offerDtoTarget.getCost().equals(new BigDecimal(454)));
+        assertEquals(10L, (long) offerDtoTarget.getId());
+        assertEquals(offerDtoTarget.getCost(), new BigDecimal(454));
         assert (offerDtoTarget.getProducts().size() == offerDtoSrc.getProducts().size());
         for (int i = 0; i < offerDtoSrc.getProducts().size(); i++) {
-            assert Objects.equals(offerDtoSrc.getProducts().get(i).getProduct(), offerDtoTarget.getProducts().get(i).getProduct());
+            assertEquals(offerDtoSrc.getProducts().get(i).getProduct(), offerDtoTarget.getProducts().get(i).getProduct());
         }
     }
 }
