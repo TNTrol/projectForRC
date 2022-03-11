@@ -1,44 +1,40 @@
 package ru.redcollar.store.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.redcollar.store.dto.ProductDto;
 import ru.redcollar.store.entity.TypeProduct;
 import ru.redcollar.store.exceptions.ProductDontExistException;
 import ru.redcollar.store.exceptions.ProductExistException;
 import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.ProductRepository;
-import ru.redcollar.store.service.ProductService;
 
 import java.math.BigDecimal;
 
-
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductServiceTest {
 
-    @Mock
+    @MockBean
     private ProductRepository productRepository;
 
-    @Mock
+    @MockBean
     private ProductMapper productMapper;
 
-    private ProductService productService;
+    private final ProductService productService;
 
-
-    @Before
-    public void initService() {
-        productService = new ProductService(productRepository, productMapper);
-    }
-
-    @Test(expected = ProductExistException.class)
+    @Test
     public void createDoubleProductTest() {
-        Mockito.when(productRepository.existsByName("arduino")).thenReturn(true);
         ProductDto product = new ProductDto(0L, "simple", "arduino", TypeProduct.CONTROLLER, new BigDecimal("300.56"));
-        productService.saveProduct(product);
+        Mockito.when(productRepository.existsByName("arduino")).thenReturn(true);
+        Assertions.assertThrows(ProductExistException.class, () -> productService.saveProduct(product));
     }
 
     @Test
@@ -48,10 +44,10 @@ public class ProductServiceTest {
         productService.updateProduct(product);
     }
 
-    @Test(expected = ProductDontExistException.class)
+    @Test
     public void updateDontExistsProductTest() {
-        Mockito.when(productRepository.existsById(1L)).thenReturn(false);
         ProductDto product = new ProductDto(1L, "simple", "arduino", TypeProduct.CONTROLLER, new BigDecimal("300.56"));
-        productService.updateProduct(product);
+        Mockito.when(productRepository.existsById(1L)).thenReturn(false);
+        Assertions.assertThrows(ProductDontExistException.class, () -> productService.updateProduct(product));
     }
 }

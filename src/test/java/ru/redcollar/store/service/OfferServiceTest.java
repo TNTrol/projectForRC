@@ -1,12 +1,14 @@
 package ru.redcollar.store.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,52 +17,47 @@ import ru.redcollar.store.entity.*;
 import ru.redcollar.store.mapper.OfferMapper;
 import ru.redcollar.store.mapper.ProductMapper;
 import ru.redcollar.store.repository.OfferRepository;
-import ru.redcollar.store.service.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OfferServiceTest {
 
-    @Mock
+    @MockBean
     private OfferRepository offerRepository;
 
-    @Mock
+    @MockBean
     private ProductService productService;
 
-    @Mock
+    @MockBean
     private PackProductService packProductService;
 
-    @Mock
+    @MockBean
     private DeliveryService deliveryService;
 
-    @Mock
+    @MockBean
     private MailService mailService;
 
-    @Mock
+    @MockBean
     private UserService userService;
 
-    @Mock
+    @MockBean
     private Authentication authentication;
 
-    @Mock
+    @MockBean
     private SecurityContext securityContext;
 
     private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
 
     private OfferMapper offerMapper = Mappers.getMapper(OfferMapper.class);
 
-    private OfferService offerService;
-
-    @Before
-    public void before() {
-        offerService = new OfferService(offerRepository, userService, productService, packProductService, deliveryService, mailService, offerMapper, productMapper);
-    }
+    private final OfferService offerService;
 
     @Test
     public void saveOffer() {
@@ -87,11 +84,11 @@ public class OfferServiceTest {
         OfferDto offerDtoTarget = offerService.saveOffer(offerMapper.toDto(offer));
         OfferDto offerDtoSrc = offerMapper.toDto(offer);
 
-        assertEquals(10L, (long) offerDtoTarget.getId());
-        assertEquals(offerDtoTarget.getCost(), new BigDecimal(454));
+        Assertions.assertEquals(10L, (long) offerDtoTarget.getId());
+        Assertions.assertEquals(offerDtoTarget.getCost(), new BigDecimal(454));
         assert (offerDtoTarget.getProducts().size() == offerDtoSrc.getProducts().size());
         for (int i = 0; i < offerDtoSrc.getProducts().size(); i++) {
-            assertEquals(offerDtoSrc.getProducts().get(i).getProduct(), offerDtoTarget.getProducts().get(i).getProduct());
+            Assertions.assertEquals(offerDtoSrc.getProducts().get(i).getProduct(), offerDtoTarget.getProducts().get(i).getProduct());
         }
     }
 }
