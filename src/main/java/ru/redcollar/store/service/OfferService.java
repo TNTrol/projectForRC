@@ -40,7 +40,7 @@ public class OfferService {
     private final OfferMapper offerMapper;
     private final ProductMapper productMapper;
 
-    public void saveOffer(OfferDto offerDto) {
+    public OfferDto saveOffer(OfferDto offerDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByLogin((String) authentication.getCredentials());
         List<Long> ids = offerDto.getProducts().stream()
@@ -65,6 +65,7 @@ public class OfferService {
         offerRepository.save(offer);
         mailService.sendMail(new MailDto(user.getEmail(), "Payment Controller Store", "Thank you for your purchase\nSum of offer: " + offer.getCost()));
         deliveryService.handDelivery(offer);
+        return offerMapper.toDto(offer);
     }
 
     public OfferDto getOffer(long id) {

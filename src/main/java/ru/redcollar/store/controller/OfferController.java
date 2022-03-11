@@ -31,16 +31,15 @@ public class OfferController {
     @PostMapping("/history")
     @Operation(summary = "Getting a order history")
     @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = OfferDto.class))))
-    public ResponseEntity<List> getAllOffer(@Parameter(description = "Offer criteria with pageable data", required = true) @Valid @RequestBody OfferPageableCriteriaDto criteriaDto) {
+    public ResponseEntity<List<OfferDto>> getAllOffer(@Parameter(description = "Offer criteria with pageable data", required = true) @Valid @RequestBody OfferPageableCriteriaDto criteriaDto) {
         return ResponseEntity.ok(offerService.getAllOffer(criteriaDto));
     }
 
     @PostMapping
     @Validated(OnCreateOffer.class)
     @Operation(summary = "New offer creation")
-    public ResponseEntity<Void> createOffer(@Parameter(description = "new offer", required = true) @Valid @RequestBody OfferDto offer) {
-        offerService.saveOffer(offer);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OfferDto> createOffer(@Parameter(description = "new offer", required = true) @Valid @RequestBody OfferDto offer) {
+        return ResponseEntity.ok(offerService.saveOffer(offer));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

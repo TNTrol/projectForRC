@@ -1,0 +1,2 @@
+INSERT INTO users(id, login, email, password, address) VALUES(1, 'admin', '!admin@mail.com', '$2a$10$pjks52MIIKhny3jqm88fHOzc5NkrhF2SvbR.s2Z/p96Kp/QuPCAuC', 'dffj lfg');
+INSERT INTO product(id, description, name, type, cost) VALUES(1, 'test_d1', 'test_n1', 'CONTROLLER', 100.1), (2, 'test_d2', 'test_n2', 'CONTROLLER', 150.0), (3, 'test_d3', 'test_n3', 'SENSOR', 250.0);
